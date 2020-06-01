@@ -1,0 +1,8 @@
+.face-box {
+    position: absolute;
+    transition: all 0.01s linear;
+    border-radius: 4px;
+    box-shadow: 0 0 5pt 1pt black;
+    border: 1px solid white;
+    color: white;
+}
