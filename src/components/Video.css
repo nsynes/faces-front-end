@@ -11,15 +11,17 @@
     width: calc(100%-2px);
     height: 5px;
 }
-
+.video-details {
+    position: relative;
+}
 @media all and (min-width: 801px) {
-    .video {
+    .video, .video-details {
         width: 640px;
         height: 360px;
     }
 }
 @media all and (max-width: 800px) {
-    .video {
+    .video, .video-details {
         width: 320px;
         height: 180px;
     }

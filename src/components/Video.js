@@ -77,14 +77,16 @@ class Video extends React.Component {
               onError={this.onError}
               onStateChange={this.onStateChange} />
             {this.state.faceLocations && this.state.faceLocations.length > 0 && faceBoxes}
+          </div>
+          <div className='video-details'>
             Face detection status: {this.props.percentageComplete}%
-              <div className='percentage-box'>
-                <div style={{position: 'absolute', left: 0, backgroundColor: 'red', width: this.props.percentageComplete+'%', height: 5}} />
-              </div>
-              <div style={{height: 40}}>
-                {this.props.loading && <Loading size='small'/>}
-              </div>
+            <div className='percentage-box'>
+              <div style={{position: 'absolute', left: 0, backgroundColor: 'red', width: this.props.percentageComplete+'%', height: 5}} />
             </div>
+            <div style={{height: 40}}>
+              {this.props.loading && <Loading size='small'/>}
+            </div>
+          </div>
         </div>
       );
     }

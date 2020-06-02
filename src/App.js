@@ -22,7 +22,7 @@ class App extends React.Component {
       loading: false,
       loggedIn: false,
       videoTextBox: 'ivoPGxUBqxQ',
-      videoID: '',
+      videoID: 'ivoPGxUBqxQ',
       faceMaxTime: 0,
       percentageComplete: 0,
       allFaceLocations: [],
@@ -50,6 +50,7 @@ class App extends React.Component {
   }
 
   findFaces = () => {
+    this.setState({loading: true})
 
     const authHeader = new Headers({ 'Authorization': this.state.authorization, 'Content-Type': 'application/json' });
     const options = { headers: authHeader };
@@ -60,7 +61,6 @@ class App extends React.Component {
           return response.ok ? json : Promise.reject(json);
       })})
     .then((result) => {
-      this.setState({loading: true})
       setTimeout(() => {
         this.getMetadata();
       }, 1000);

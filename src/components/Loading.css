@@ -6,7 +6,7 @@
   border-radius: 50%;
   animation: rotate 1s infinite ease-in-out, color-transition 1s infinite ease-in-out;
   z-index: 2;
-  bottom: 0%;
+  top: 2em;
 }
 .loading.large {
   border-width: 10px;
