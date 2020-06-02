@@ -6,3 +6,21 @@
     border: 1px solid white;
     color: white;
 }
+.percentage-box {
+    border: 1px solid black;
+    width: calc(100%-2px);
+    height: 5px;
+}
+
+@media all and (min-width: 801px) {
+    .video {
+        width: 640px;
+        height: 360px;
+    }
+}
+@media all and (max-width: 800px) {
+    .video {
+        width: 320px;
+        height: 180px;
+    }
+}

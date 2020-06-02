@@ -1,0 +1,44 @@
+.loading {
+  display: inline-block;
+  position: absolute;
+  border-style: solid;
+  border-right-color: rgba(128, 128, 128, 0.25);
+  border-radius: 50%;
+  animation: rotate 1s infinite ease-in-out, color-transition 1s infinite ease-in-out;
+  z-index: 2;
+  bottom: 0%;
+}
+.loading.large {
+  border-width: 10px;
+  width: 48px;
+  height: 48px;
+  left: calc(50% - 34px);
+}
+.loading.small {
+  border-width: 4px;
+  width: 18px;
+  height: 18px;
+  left: calc(50% - 6px);
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes color-transition {
+  0% {
+    border-color: orange;
+    border-right-color: red;
+  }
+  50% {
+    border-color: yellow;
+    border-right-color: red;
+  }
+  100% {
+    border-color: orange;
+    border-right-color: red;
+  }
+}

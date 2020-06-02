@@ -1,8 +1,10 @@
 import React from 'react';
 import YouTube from 'react-youtube';
+
+import Loading from './Loading';
 import './Video.css';
 
-var interval;
+var videoInterval;
 
 class Video extends React.Component {
   
@@ -29,7 +31,7 @@ class Video extends React.Component {
   onPlayVideo() {
     this.state.player.playVideo();
 
-    interval = setInterval(() => {
+    videoInterval = setInterval(() => {
         if ( this.props.videoMetadata ) {
           const n = Math.floor(this.state.player.getCurrentTime() * this.props.videoMetadata.checksPerSecond)
           this.setState({ faceLocations: this.props.allFaceLocations[n] })
@@ -40,7 +42,7 @@ class Video extends React.Component {
   onPauseVideo() {
     this.state.player.pauseVideo();
 
-    clearInterval(interval);
+    clearInterval(videoInterval);
   }
 
   onError(error) {
@@ -67,7 +69,7 @@ class Video extends React.Component {
         <div align='center'>
           <div style={{ position:'relative', display:'inline-block' }}>
             <YouTube
-              style={{width: '100%', height: '100%'}}
+              className='video'
               videoId={this.props.videoID}
               onReady={this.onReady}
               onPlay={this.onPlayVideo}
@@ -75,7 +77,14 @@ class Video extends React.Component {
               onError={this.onError}
               onStateChange={this.onStateChange} />
             {this.state.faceLocations && this.state.faceLocations.length > 0 && faceBoxes}
-          </div>
+            Face detection status: {this.props.percentageComplete}%
+              <div className='percentage-box'>
+                <div style={{position: 'absolute', left: 0, backgroundColor: 'red', width: this.props.percentageComplete+'%', height: 5}} />
+              </div>
+              <div style={{height: 40}}>
+                {this.props.loading && <Loading size='small'/>}
+              </div>
+            </div>
         </div>
       );
     }
