@@ -82,7 +82,7 @@ class App extends React.Component {
       console.log('faces', result)
       const apiData = result.data;
 
-      if ( result.complete ) clearInterval(collectInterval);
+      if ( result.complete === 'finished' ) clearInterval(collectInterval);
 
       if ( this.state.videoMetadata ) {
         const { videoMetadata } = this.state;
@@ -102,7 +102,7 @@ class App extends React.Component {
           time += 1/parseFloat(videoMetadata.checksPerSecond)
         }
         console.log('maxTime', maxTime)
-        const percentageComplete = result.complete ? 100 : Math.round(maxTime / (videoMetadata.totalFrames / videoMetadata.fps) * 100);
+        const percentageComplete = result.complete === 'finished' ? 100 : Math.round(maxTime / (videoMetadata.totalFrames / videoMetadata.fps) * 100);
         const loading = percentageComplete === 100 ? false : true;
         console.log('loading', loading)
         this.setState({ allFaceLocations: allFaceLocations, faceMaxTime: maxTime, percentageComplete: percentageComplete, loading: loading })
