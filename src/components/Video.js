@@ -1,5 +1,6 @@
 import React from 'react';
-import YouTube from 'react-youtube';
+import ReactPlayer from 'react-player'
+//import YouTube from 'react-youtube';
 
 import Loading from './Loading';
 import './Video.css';
@@ -16,31 +17,21 @@ class Video extends React.Component {
       faceLocations: [] // top, right, bottom, left
     };
 
-    this.onReady = this.onReady.bind(this);
     this.onPlayVideo = this.onPlayVideo.bind(this);
     this.onPauseVideo = this.onPauseVideo.bind(this);
   }
 
-  onReady(event) {
-    console.log('onReady')
-    this.setState({
-      player: event.target,
-    });
-  }
-
   onPlayVideo() {
-    this.state.player.playVideo();
 
     videoInterval = setInterval(() => {
-        if ( this.props.videoMetadata ) {
-          const n = Math.floor(this.state.player.getCurrentTime() * this.props.videoMetadata.checksPerSecond)
+        if ( this.props.checksPerSecond ) {
+          const n = Math.floor(this.player.getCurrentTime() * this.props.checksPerSecond)
           this.setState({ faceLocations: this.props.allFaceLocations[n] })
         }
     }, 100)
   }
 
   onPauseVideo() {
-    this.state.player.pauseVideo();
 
     clearInterval(videoInterval);
   }
@@ -49,8 +40,8 @@ class Video extends React.Component {
     console.log('onError', error)
   }
 
-  onStateChange(e) {
-    console.log('onStateChange', e)
+  ref = player => {
+    this.player = player
   }
 
   render() {
@@ -64,22 +55,25 @@ class Video extends React.Component {
 
     if ( this.props.videoID === '') {
       return (null)
-    } else {
+    } else if (this.props.videoType === 'youtube') {
       return (
-        <div align='center'>
-          <div style={{ position:'relative', display:'inline-block' }}>
-            <YouTube
-              className='video'
-              videoId={this.props.videoID}
+        <div className='video-top-container'>
+          <div className='video-container'>
+            <ReactPlayer
+              className='react-player'
+              ref={this.ref}
+              url={`https://www.youtube.com/watch?v=${this.props.videoID}`}
+              width='100%'
+              height='100%'
+              controls={true}
               onReady={this.onReady}
               onPlay={this.onPlayVideo}
               onPause={this.onPauseVideo}
-              onError={this.onError}
-              onStateChange={this.onStateChange} />
+              onError={this.onError} />
             {this.state.faceLocations && this.state.faceLocations.length > 0 && faceBoxes}
           </div>
           <div className='video-details'>
-            Face detection status: {this.props.percentageComplete}%
+            Face detection: {this.props.percentageComplete}%
             <div className='percentage-box'>
               <div style={{position: 'absolute', left: 0, backgroundColor: 'red', width: this.props.percentageComplete+'%', height: 5}} />
             </div>
@@ -89,8 +83,7 @@ class Video extends React.Component {
           </div>
         </div>
       );
-    }
-    
+    }    
   }
 }
 

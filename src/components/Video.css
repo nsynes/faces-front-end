@@ -13,16 +13,32 @@
 }
 .video-details {
     position: relative;
+    text-align: center;
+    margin: 0 .75em;
 }
+.video-top-container {
+    margin: auto;
+}
+.video-container {
+    position: relative;
+    padding-top: 56.25%; /* Player ratio: 100 / (1280 / 720) */
+    width: 100%;
+    height: 100%;
+}
+.react-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 @media all and (min-width: 801px) {
-    .video, .video-details {
-        width: 640px;
-        height: 360px;
+    .video-top-container {
+        width: 50%;
+        height: 50%;
     }
 }
 @media all and (max-width: 800px) {
-    .video, .video-details {
-        width: 320px;
-        height: 180px;
+    .video-top-container {
+        width: 100%;
+        height: 100%;
     }
 }
