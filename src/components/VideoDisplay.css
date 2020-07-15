@@ -3,8 +3,7 @@
     transition: all 0.01s linear;
     border-radius: 4px;
     box-shadow: 0 0 5pt 1pt black;
-    border: 1px solid white;
-    color: white;
+    border: 2px solid;
 }
 .percentage-box {
     border: 1px solid black;
@@ -14,7 +13,7 @@
 .video-details {
     position: relative;
     text-align: center;
-    margin: 0 .75em;
+    margin: .75em .75em 0 .75em;
 }
 .video-top-container {
     margin: auto;
@@ -29,7 +28,7 @@
     position: absolute;
     top: 0;
     left: 0;
-  }
+}
 @media all and (min-width: 801px) {
     .video-top-container {
         width: 50%;

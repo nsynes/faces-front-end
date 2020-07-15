@@ -1,0 +1,19 @@
+.main-page {
+    padding-top: 8em;
+}
+.main-page.visible {
+    display: block;
+}
+.main-page.hidden {
+    display: none;
+}
+@media all and (min-width: 801px) {
+    .main-page {
+        padding-top: 8em;
+    }
+}
+@media all and (max-width: 800px) {
+    .main-page {
+        padding-top: 15em;
+    }
+}

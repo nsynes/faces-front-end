@@ -1,29 +1,3 @@
 .App {
   /**/
 }
-.login-container {
-  position: fixed;
-  width: 100%;
-  display: flex;
-  border-bottom: 1px solid rgb(200,200,200);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  vertical-align: center;
-  z-index: 100;
-  background-color: white;
-}
-.google-button {
-  margin: 1em;
-}
-.login-status {
-  margin: 1em;
-  padding: 0.2em;
-  height: 2.5em;
-  border: 1px solid rgb(200,200,200);
-  border-radius: 5px;
-}
-.video-select-container {
-  margin: 1em;
-}
-.tab-buttons {
-  margin: 1em;
-}
