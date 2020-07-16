@@ -1,68 +1,78 @@
 import React from 'react';
+import moment from 'moment';
 import { BarChart, Bar, Legend, Tooltip, CartesianGrid, XAxis, YAxis, ReferenceLine } from 'recharts';
 
 import MainPage from './MainPage';
 
 const ResultsDisplay = (props) => {
-    const data1 = [
-        {
-          name: '', male: 54, female: 40,
-        }]
-    const data2 = [
-        {
-            time: 1.25, male: -1, female: 0
-        },
-        {
-            time: 1.5, male: -3, female: 0
-        },
-        {
-            time: 1.75, male: -3, female: 0
-        },
-        {
-            time: 2, male: 0, female: 0,
-        },
-        {
-            time: 3, male: -1, female: 1,
-        },
-        {
-            time: 4, male: -1, female: 2,
-        },
-        {
-            time: 5, male: -2, female: 0,
-        }]
-    return (
-        <MainPage visible={props.visible}>
-            <div align='center'>
-                <BarChart width={730} height={250} data={data1}>
-                <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis tickFormatter={(label) => `${label}%`}/>
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="male" fill="#0000ff" />
-                    <Bar dataKey="female" fill="#ff1493" />
-                </BarChart>
-                <br />
-                <br />
-                <br />
-                <BarChart
-                    width={730}
-                    height={250}
-                    data={data2}
-                    stackOffset="sign"
-                    barCategoryGap={0}>
-                <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" />
-                    <YAxis tickFormatter={(label) => Math.abs(label)}/>
-                    <Tooltip />
-                    <Legend />
-                    <ReferenceLine y={0} stroke="#000" />
-                    <Bar dataKey="male" fill="#0000ff" stackId="stack" />
-                    <Bar dataKey="female" fill="#ff1493" stackId="stack" />
-                </BarChart>
-            </div>
-        </MainPage>
-    )
+
+    const { allFaceGroups, groupClassification, checksPerSecond } = props;
+    var maleTotal = 0, femaleTotal = 0;
+    var timeseries = [];
+    var mCount, fCount;
+    for ( var i = 0; i < allFaceGroups.length; i++ ) {
+        if ( allFaceGroups[i] ) {
+            mCount=0;
+            fCount=0;
+            for ( var j = 0; j < allFaceGroups[i].length; j++ ) {
+                if ( groupClassification[allFaceGroups[i][j]] === 'male' ) {
+                    maleTotal += 1/checksPerSecond;
+                    mCount -= 1
+                }
+                else if ( groupClassification[allFaceGroups[i][j]] === 'female' ) {
+                    femaleTotal += 1/checksPerSecond;
+                    fCount += 1;
+                }
+            }
+            timeseries.push({time: i/checksPerSecond, male: mCount, female: fCount})
+        }
+    }
+    const malePercent = maleTotal/(maleTotal+femaleTotal)*100;
+    const femalePercent = femaleTotal/(maleTotal+femaleTotal)*100;
+    
+    if ( allFaceGroups && allFaceGroups.length > 0 ) {
+        return (
+            <MainPage visible={props.visible}>
+                <div align='center'>
+                    <BarChart
+                        width={730}
+                        height={250}
+                        data={timeseries}
+                        stackOffset="sign"
+                        barCategoryGap={0}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis type="number" dataKey="time" tickFormatter={timeStr => new Date(timeStr * 1000).toISOString().substr(14, 5)} />
+                        <YAxis tickFormatter={(label) => Math.abs(label)}/>
+                        <Legend />
+                        <ReferenceLine y={0} stroke="#000" />
+                        <Bar dataKey="male" fill="#0000ff" stackId="stack" />
+                        <Bar dataKey="female" fill="#ff1493" stackId="stack" />
+                    </BarChart>
+                    <br />
+                    <br />
+                    <br />
+                    <BarChart width={730} height={250} data={[{name: '', male: malePercent, female: femalePercent}]}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis tickFormatter={(label) => `${label}%`}/>
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="male" fill="#0000ff" />
+                        <Bar dataKey="female" fill="#ff1493" />
+                    </BarChart>
+                </div>
+            </MainPage>
+        )
+    } else {
+        return (
+            <MainPage visible={props.visible}>
+                <div align='center'>
+                    No results yet...
+                </div>
+            </MainPage>
+        )
+    }
+    
 }
 
 export default ResultsDisplay;

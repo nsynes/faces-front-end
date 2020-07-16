@@ -28,24 +28,24 @@ class App extends React.Component {
       },
       loading: false,
       videoTextBox: 'dIBsEtQyKcA',//'iYZbQIXoVMY',
-      videoID: 'dIBsEtQyKcA',//'iYZbQIXoVMY',
+      videoID: 'dIBsEtQyKcA',//'iYZbQIXoVMY','HsRX4myHr4o'
       videoType: 'youtube',
       faceMaxTime: 0,
       percentageComplete: 0,
       complete: false,
-      checksPerSecond: 4,
+      checksPerSecond: 2,
       allFaceLocations: [],
-      allFaceGroups: [],
+      allFaceGroups: [], //[null,["-1","-1","-1"],["-1","-1","-1"],["-1","-1","-1"],["-1"],["0"],["0"],["0"],["0"],["0"],["0"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["-1"],["1"],["1"],["1"],["1"],["1"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0","2"],["0","2"],["0","2"],["0","2"],["0","2"],["0","2"],["0","2"],["0","2"],["0","2"],["0","2"],["0","2"],["0","2"],["2","0"],["2","0"],["2","0"],["2","0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["1"],["1"],["1"],["1"],["3","-1"],["3"],["3"],["3","-1"],["-1","3"],["3","-1"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["1"],["1"],["1"],["-1"],["1"],["1"],["3"],["3"],["-1"],["-1","-1"],["-1"],["-1","-1"],["3","-1"],["3"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["-1"],["-1"],["4","-1"],["4"],["4"],["4"],["4","-1"],["-1"],["-1"],["1"],["1"],["1"],["1"],["1"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["-1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["-1"],["-1","-1"],["2","-1","5"],["-1","2","5"],["-1","2","5"],["-1","5","2"],["-1","5","2"],["-1","2","5"],["-1","5","2"],["6","5","2"],["-1","5","2"],["6","5","2"],["-1","5","2"],["-1"],["6"],["6"],["6"],["6"],["6"],["6"],["6"],["-1"],["6"],["6"],["6"],["6"],["6","-1","7"],["6","-1","7"],["-1","6","7"],["-1","-1","2"],["-1","-1","7"],["-1","-1","-1"],["1"],["1"],["1"],["8"],["8"],["8"],["8"],["8"],["8"],["8"],["8"],["8"],["8"],["8"],["8"],["8"],["-1"]],
       labelColours: {'male':'#0000ff', 'female':'#ff1493'},
       faceImages: [],
       clusteredFaceImages: {},
-      groupClassification: {},
+      groupClassification: {},//{"0":"female","1":"male","2":"male","3":"male","4":"female","5":"female","6":"female","7":"male","8":"male","-1":"unknown"},
       faceClassification: {},
       allClassified: false,
       videoMetadata: {},
       faceListLength: 0,
       model: 'cnn',
-      view: 'results',
+      view: 'video',
       clustered: false
     }
   }
@@ -198,7 +198,6 @@ class App extends React.Component {
       for (var groupID in result.clusters) {
         for (var i=0; i < result.clusters[groupID].length; i++) {
           [time, faceN] = result.clusters[groupID][i].match(numberPattern);
-          console.log(result.clusters[groupID][i], time, faceN)
           index = time * videoMetadata.checksPerSecond;
           if ( typeof(allFaceGroups[index]) == 'undefined' ) {
             allFaceGroups[index] = []
@@ -206,9 +205,7 @@ class App extends React.Component {
           allFaceGroups[index][parseInt(faceN)] = groupID
         }
       }
-      console.log('allFaceGroups',allFaceGroups)
       
-
       this.setState({clustered: true, clusteredFaceImages: result.clusters, allFaceGroups: allFaceGroups})
     })
     .catch((error) => {
@@ -225,6 +222,7 @@ class App extends React.Component {
     return (
       <div className='App'>
         <Header 
+          selectedTab={this.state.view}
           user={this.state.user}
           loading={this.state.loading}
           videoTextBox={this.state.videoTextBox}
@@ -263,7 +261,11 @@ class App extends React.Component {
           classifyGroup={this.classifyGroup}
           clusterFaces={this.clusterFaces} />
         <ResultsDisplay
-          visible={this.state.view === 'results'} />
+          visible={this.state.view === 'results'}
+          labelColours={this.state.labelColours}
+          groupClassification={this.state.groupClassification}
+          allFaceGroups={this.state.allFaceGroups}
+          checksPerSecond={this.state.checksPerSecond} />
       </div>
     );
   }

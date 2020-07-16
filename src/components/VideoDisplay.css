@@ -1,5 +1,6 @@
 .face-box {
     position: absolute;
+    pointer-events: none;
     transition: all 0.01s linear;
     border-radius: 4px;
     box-shadow: 0 0 5pt 1pt black;

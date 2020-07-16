@@ -9,36 +9,39 @@ const Header = (props) => {
 
 
     return (
-        <div className='login-container'>
-            <div className='tab-buttons'>
-                Tabs: &nbsp;
-                <button onClick={props.handleViewClick}>Video</button>
-                <button onClick={props.handleViewClick}>Faces</button>
-                <button onClick={props.handleViewClick}>Results</button>
+        <div className='header-container'>
+            <div className='tab-container'>
+                <div style={{position: 'absolute', bottom: 0}}>
+                    <button className={`tab ${props.selectedTab === 'video' ? 'selected' : ''}`} onClick={props.handleViewClick}>Video</button>
+                    <button className={`tab ${props.selectedTab === 'faces' ? 'selected' : ''}`} onClick={props.handleViewClick}>Faces</button>
+                    <button className={`tab ${props.selectedTab === 'results' ? 'selected' : ''}`} onClick={props.handleViewClick}>Results</button>
+                </div>
             </div>
-            <div className='video-select-container'>
-            <input
-                style={{width: 110}}
-                type="text"
-                name="videoTextBox"
-                value={props.videoTextBox}
-                placeholder={'Video URL'}
-                onChange={props.handleVideoTextBoxChange} />
-            <button onClick={props.setVideo}>Select video</button>
-            <button
-                onClick={props.startDetection}
-                disabled={(props.videoID && props.user.loggedIn) ? false : true}>Find faces
-            </button>
-            </div>
-            <GoogleButtons
-                responseGoogleSuccess={props.responseGoogleSuccess}
-                responseGoogleFailure={props.responseGoogleFailure}
-                responseGoogleLogout={props.responseGoogleLogout}>
-            </GoogleButtons>
-            <div className='login-status'>
-            { props.user.loggedIn ? `User: ${props.user.name}`: 'Log in to use the tool' }
-            <br/>
-            { props.user.secondsRemaining ? `Time remaining (H:M:S): ${timeRemaining}`: ''}
+            <div className='login-container'>
+                <div className='video-select-container'>
+                <input
+                    style={{width: 110}}
+                    type="text"
+                    name="videoTextBox"
+                    value={props.videoTextBox}
+                    placeholder={'Video URL'}
+                    onChange={props.handleVideoTextBoxChange} />
+                <button onClick={props.setVideo}>Select video</button>
+                <button
+                    onClick={props.startDetection}
+                    disabled={(props.videoID && props.user.loggedIn) ? false : true}>Find faces
+                </button>
+                </div>
+                <GoogleButtons
+                    responseGoogleSuccess={props.responseGoogleSuccess}
+                    responseGoogleFailure={props.responseGoogleFailure}
+                    responseGoogleLogout={props.responseGoogleLogout}>
+                </GoogleButtons>
+                <div className='login-status'>
+                { props.user.loggedIn ? `User: ${props.user.name}`: 'Log in to use the tool' }
+                <br/>
+                { props.user.secondsRemaining ? `Time remaining (H:M:S): ${timeRemaining}`: ''}
+                </div>
             </div>
         </div>
     )
