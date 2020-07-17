@@ -12,6 +12,7 @@ class VideoDisplay extends React.Component {
     super(props);
 
     this.state = {
+      validVideo: true,
       player: null,
       n: null,
       faceLocations: [] // top, right, bottom, left
@@ -34,8 +35,14 @@ class VideoDisplay extends React.Component {
     clearInterval(videoInterval);
   }
 
-  onError(error) {
+  onReady = (e) => {
+    console.log('onReady', e)
+    this.setState({validVideo: true})
+  }
+
+  onError = (error) => {
     console.log('onError', error)
+    this.setState({validVideo: false})
   }
 
   ref = player => {
@@ -55,9 +62,7 @@ class VideoDisplay extends React.Component {
       })
     }
 
-    if ( this.props.videoID === '') {
-      return (null)
-    } else if (this.props.videoType === 'youtube') {
+    if ( this.props.videoID ) {
       return (
         <MainPage visible={this.props.visible}>
           <div className='video-top-container'>
@@ -84,7 +89,8 @@ class VideoDisplay extends React.Component {
           </div>
         </MainPage>
       );
-    }    
+    }
+    return <div>Invalid video selected</div>    
   }
 }
 

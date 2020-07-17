@@ -143,6 +143,7 @@ class App extends React.Component {
     fetch(`${API_URL_getFaceLocations}?userID=${this.state.user.ID}&videoID=${this.state.videoID}&model=${this.state.model}&checksPerSecond=${this.state.checksPerSecond}&from=${this.state.faceMaxTime}`, options)
     .then(handleResponse)
     .then((result) => {
+      console.log('faces', result)
       
       const apiData = result.data;
 

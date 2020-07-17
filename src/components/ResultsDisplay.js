@@ -3,6 +3,7 @@ import moment from 'moment';
 import { BarChart, Bar, Legend, Tooltip, CartesianGrid, XAxis, YAxis, ReferenceLine } from 'recharts';
 
 import MainPage from './MainPage';
+import ChartToolTip from './ChartToolTip';
 
 const ResultsDisplay = (props) => {
 
@@ -39,14 +40,16 @@ const ResultsDisplay = (props) => {
                         height={250}
                         data={timeseries}
                         stackOffset="sign"
+                        margin={{top: 0, right: 0, left: 0, bottom: 0}}
                         barCategoryGap={0}>
                     <CartesianGrid strokeDasharray="3 3" />
                         <XAxis type="number" dataKey="time" tickFormatter={timeStr => new Date(timeStr * 1000).toISOString().substr(14, 5)} />
                         <YAxis tickFormatter={(label) => Math.abs(label)}/>
                         <Legend />
+                        <Tooltip content={<ChartToolTip chartName={'timeseries'}/>} />
                         <ReferenceLine y={0} stroke="#000" />
-                        <Bar dataKey="male" fill="#0000ff" stackId="stack" />
-                        <Bar dataKey="female" fill="#ff1493" stackId="stack" />
+                        <Bar dataKey="male" fill={props.labelColours['male']} stackId="stack" />
+                        <Bar dataKey="female" fill={props.labelColours['female']} stackId="stack" />
                     </BarChart>
                     <br />
                     <br />
@@ -55,10 +58,10 @@ const ResultsDisplay = (props) => {
                     <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" />
                         <YAxis tickFormatter={(label) => `${label}%`}/>
-                        <Tooltip />
+                        <Tooltip content={<ChartToolTip chartName={'summary'}/>} />
                         <Legend />
-                        <Bar dataKey="male" fill="#0000ff" />
-                        <Bar dataKey="female" fill="#ff1493" />
+                        <Bar dataKey="male" fill={props.labelColours['male']} />
+                        <Bar dataKey="female" fill={props.labelColours['female']} />
                     </BarChart>
                 </div>
             </MainPage>

@@ -33,6 +33,7 @@ const Header = (props) => {
                 </button>
                 </div>
                 <GoogleButtons
+                    loggedIn={props.user.loggedIn}
                     responseGoogleSuccess={props.responseGoogleSuccess}
                     responseGoogleFailure={props.responseGoogleFailure}
                     responseGoogleLogout={props.responseGoogleLogout}>
