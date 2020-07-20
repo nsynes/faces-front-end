@@ -12,7 +12,7 @@ class VideoDisplay extends React.Component {
     super(props);
 
     this.state = {
-      validVideo: true,
+      validVideo: false,
       player: null,
       n: null,
       faceLocations: [] // top, right, bottom, left
@@ -70,7 +70,7 @@ class VideoDisplay extends React.Component {
               <ReactPlayer
                 className='react-player'
                 ref={this.ref}
-                url={`https://www.youtube.com/watch?v=${this.props.videoID}`}
+                url={`youtu.be/${this.props.videoID}`}
                 width='100%'
                 height='100%'
                 controls={true}

@@ -20,7 +20,7 @@ const Header = (props) => {
             <div className='login-container'>
                 <div className='video-select-container'>
                 <input
-                    style={{width: 110}}
+                    style={{width: 400}}
                     type="text"
                     name="videoTextBox"
                     value={props.videoTextBox}

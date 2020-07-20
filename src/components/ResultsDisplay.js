@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import { BarChart, Bar, Legend, Tooltip, CartesianGrid, XAxis, YAxis, ReferenceLine } from 'recharts';
 
 import MainPage from './MainPage';

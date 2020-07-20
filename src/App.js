@@ -27,8 +27,8 @@ class App extends React.Component {
         secondsRemaining: null
       },
       loading: false,
-      videoTextBox: 'dIBsEtQyKcA',//'iYZbQIXoVMY',
-      videoID: 'dIBsEtQyKcA',//'iYZbQIXoVMY','HsRX4myHr4o'
+      videoTextBox: 'iYZbQIXoVMY',//'dIBsEtQyKcA',//'HsRX4myHr4o',
+      videoID:'iYZbQIXoVMY',//'dIBsEtQyKcA',//'HsRX4myHr4o',
       videoType: 'youtube',
       faceMaxTime: 0,
       percentageComplete: 0,
@@ -43,7 +43,7 @@ class App extends React.Component {
       faceClassification: {},
       allClassified: false,
       videoMetadata: {},
-      faceListLength: 0,
+      faceListLength: null,
       model: 'cnn',
       view: 'video',
       clustered: false
@@ -58,15 +58,23 @@ class App extends React.Component {
 }
 
   handleVideoTextBoxChange = (e) => {
-    this.setState({videoTextBox: e.target.value});
+    console.log('handleVideoTextBoxChange', e.target.value)
+    this.setVideo(e.target.value)
   }
 
-  setVideo = () => {
-    const { videoTextBox } = this.state
+  setVideo = (url) => {
     this.setState({
-      videoID: videoTextBox,
+      videoTextBox: url,
+      videoID: url,
       allFaceLocations: [],
       allFaceGroups: [],
+      faceImages: [],
+      clusteredFaceImages: {},
+      groupClassification: {},
+      faceClassification: {},
+      allClassified: false,
+      videoMetadata: {},
+      faceListLength: null,
       faceMaxTime: 0,
       percentageComplete: 0});
   }
@@ -147,7 +155,7 @@ class App extends React.Component {
       
       const apiData = result.data;
 
-      var { allFaceLocations, allFaceGroups, faceImages, faceListLength, videoMetadata } = this.state;
+      var { allFaceLocations, faceImages, faceListLength, videoMetadata } = this.state;
       var maxTime = 0;
       
       var time = 0;
@@ -192,7 +200,7 @@ class App extends React.Component {
     .then(handleResponse)
     .then((result) => {
       console.log('cluster result', result)
-      var { faceListLength, allFaceGroups, videoMetadata } = this.state;
+      var { allFaceGroups, videoMetadata } = this.state;
 
       var numberPattern = /[\d.]+/g;
       var time, faceN, index;
