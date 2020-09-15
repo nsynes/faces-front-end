@@ -26,7 +26,7 @@ class App extends React.Component {
         authorization: null,
         secondsRemaining: null
       },
-      landingPage: false,
+      landingPage: true,
       loading: false,
       videoMetadata: {},
       videoURL: 'youtu.be/iYZbQIXoVMY',//'0_6AK52kSVQ',//'dIBsEtQyKcA',//'HsRX4myHr4o',
@@ -357,6 +357,14 @@ class App extends React.Component {
             clickClassifyFace={this.clickClassifyFace}
             hoverClassifyFace={this.hoverClassifyFace} />
           <ResultsDisplay
+            videoURL={this.state.videoURL}
+            allFaceLocations={this.state.allFaceLocations}
+            faceGroupTS={this.state.faceGroupTS}
+            faceTS={this.state.faceTS}
+            groupClassification={this.state.groupClassification}
+            labelColours={this.state.labelColours}
+            checksPerSecond={this.state.checksPerSecond}
+            setVideoID={this.setVideoID}
             visible={this.state.view === 'results'}
             labelColours={this.state.labelColours}
             groupClassification={this.state.groupClassification}

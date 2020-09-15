@@ -2,6 +2,7 @@ import React from 'react';
 import { BarChart, Bar, Legend, Tooltip, CartesianGrid, XAxis, YAxis, ReferenceLine } from 'recharts';
 
 import MainPage from './MainPage';
+import Video from './Video';
 import ChartToolTip from './ChartToolTip';
 
 const ResultsDisplay = (props) => {
@@ -49,6 +50,22 @@ const ResultsDisplay = (props) => {
         return (
             <MainPage visible={props.visible}>
                 <div align='center' style={{marginTop: '2em'}}>
+                    <div className='video-top-container'>
+                        <div className='video-container'>
+                            <Video
+                                videoURL={props.videoURL}
+                                allFaceLocations={props.allFaceLocations}
+                                faceGroupTS={props.faceGroupTS}
+                                faceTS={props.faceTS}
+                                groupClassification={props.groupClassification}
+                                labelColours={props.labelColours}
+                                checksPerSecond={props.checksPerSecond}
+                                setVideoID={props.setVideoID} />
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <br />
                     <BarChart
                         width={730}
                         height={250}
