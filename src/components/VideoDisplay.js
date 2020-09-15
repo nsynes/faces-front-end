@@ -2,6 +2,7 @@ import React from 'react';
 import ReactPlayer from 'react-player'
 
 import MainPage from './MainPage';
+import Instructions from './Instructions';
 import './VideoDisplay.css';
 
 var videoInterval;
@@ -12,8 +13,6 @@ class VideoDisplay extends React.Component {
     super(props);
 
     this.state = {
-      player: null,
-      n: null,
       faceLocations: [] // top, right, bottom, left
     };
 
@@ -91,6 +90,7 @@ class VideoDisplay extends React.Component {
 
     return (
       <MainPage visible={this.props.visible}>
+        <Instructions tab='video' />
         <div align='center' style={{marginBottom: '1em'}}>
           <input
               style={{width: 400, maxWidth: '90%'}}
@@ -104,6 +104,8 @@ class VideoDisplay extends React.Component {
               onClick={this.props.startDetection}
               disabled={(this.props.videoID && this.props.user.loggedIn) ? false : true}>Find faces
           </button>
+          {!this.props.user.loggedIn &&
+          <span style={{color: 'red'}}>Login (top right)</span>}
         </div>
         <div className='video-top-container'>
           <div className='video-container'>

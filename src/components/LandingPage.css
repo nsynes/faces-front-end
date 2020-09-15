@@ -1,0 +1,41 @@
+.landing-page {
+    background-color: rgb(40,40,40);
+    height: 100vh;
+}
+
+.overlay {
+    background-image: url('../img/face-capture-screenshot.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100vh;
+}
+
+.intro-text {
+    color: white;
+    font-size: 20pt;
+    padding: 4em 2em;
+}
+
+.get-started {
+    font-size: 30pt;
+    border-radius: 10px;
+}
+.get-started:hover {
+    cursor: pointer;
+    background: linear-gradient(90deg, #ff1493, #0000ff);
+    color: white;
+}
+
+a:link {
+    color: white;
+}
+a:visited {
+    color: white;
+}
+a:hover {
+    text-decoration: none;
+    color: rgb(150,150,150);
+}
+a:active {
+    color: white;
+}

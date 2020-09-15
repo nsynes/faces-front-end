@@ -10,12 +10,12 @@
 }
 @media all and (min-width: 801px) {
   .loading {
-    top: 4.5em;
+    top: 3.5em;
   }
 }
 @media all and (max-width: 800px) {
   .loading {
-    top: 7em;
+    top: 6.5em;
   }
 }
 .loading.large {
@@ -46,15 +46,15 @@
 }
 @keyframes color-transition {
   0% {
-    border-color: orange;
-    border-right-color: red;
+    border-color: red;
+    border-right-color: rgba(255,255,255,0);
   }
   50% {
-    border-color: yellow;
-    border-right-color: red;
+    border-color: orange;
+    border-right-color: rgba(255,255,255,0);
   }
   100% {
-    border-color: orange;
-    border-right-color: red;
+    border-color: red;
+    border-right-color: rgba(255,255,255,0);
   }
 }

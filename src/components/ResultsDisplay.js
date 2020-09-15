@@ -29,12 +29,12 @@ const ResultsDisplay = (props) => {
         else if ( faceGroupTS[i] ) {
             mCount=0;
             fCount=0;
-            for ( var j = 0; j < faceGroupTS[i].length; j++ ) {
-                if ( groupClassification[faceGroupTS[i][j]] === 'male' ) {
+            for ( var jj = 0; jj < faceGroupTS[i].length; jj++ ) {
+                if ( groupClassification[faceGroupTS[i][jj]] === 'male' ) {
                     maleTotal += 1/checksPerSecond;
                     mCount -= 1
                 }
-                else if ( groupClassification[faceGroupTS[i][j]] === 'female' ) {
+                else if ( groupClassification[faceGroupTS[i][jj]] === 'female' ) {
                     femaleTotal += 1/checksPerSecond;
                     fCount += 1;
                 }
@@ -48,7 +48,7 @@ const ResultsDisplay = (props) => {
     if ( faceGroupTS && faceGroupTS.length > 0 ) {
         return (
             <MainPage visible={props.visible}>
-                <div align='center'>
+                <div align='center' style={{marginTop: '2em'}}>
                     <BarChart
                         width={730}
                         height={250}
@@ -84,7 +84,8 @@ const ResultsDisplay = (props) => {
         return (
             <MainPage visible={props.visible}>
                 <div align='center'>
-                    No results yet...
+                    <br />
+                    No results yet.
                 </div>
             </MainPage>
         )

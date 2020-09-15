@@ -11,7 +11,7 @@ const FacesClustered = (props) => {
     var numberPattern = /[\d.]+/g;
     var time, faceN, index;
     var totalFaceGroups = Math.max(...Object.keys(props.clusteredFaceImages)) + 2;
-
+    
     return (
         <div>
             <FaceControls 
@@ -19,18 +19,20 @@ const FacesClustered = (props) => {
                 totalFaceGroups={totalFaceGroups}
                 classifyGroup={props.classifyGroup}
                 groupClassification={props.groupClassification} />
+            {props.faceGroup !== 0 &&
             <button
                 className='button'
                 style={{position: 'fixed', left: 10, top: '50%'}}
                 onClick={props.decrementFaceGroup}>
                     <KeyboardArrowLeftRounded fontSize='large' />
-            </button>
+            </button>}
+            {props.faceGroup !== -1 && 
             <button
                 className='button'
                 style={{position: 'fixed', right: 10, top: '50%'}}
                 onClick={props.incrementFaceGroup}>
                     <KeyboardArrowRightRounded fontSize='large' />
-            </button>
+            </button>}
             <div className='face-container'>
                 <div className='face-group-container' key={`face${props.faceGroup}`}>
                     {props.clusteredFaceImages[props.faceGroup].map((img) => {

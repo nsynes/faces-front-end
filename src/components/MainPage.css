@@ -6,11 +6,11 @@
 }
 @media all and (min-width: 801px) {
     .main-page {
-        padding-top: 8em;
+        padding-top: 5.5em;
     }
 }
 @media all and (max-width: 800px) {
     .main-page {
-        padding-top: 10em;
+        padding-top: 9.5em;
     }
 }

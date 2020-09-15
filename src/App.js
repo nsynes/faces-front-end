@@ -5,6 +5,7 @@ import Loading from './components/Loading';
 import VideoDisplay from './components/VideoDisplay';
 import FacesDisplay from './components/FacesDisplay';
 import ResultsDisplay from './components/ResultsDisplay';
+import LandingPage from './components/LandingPage';
 import './App.css';
 import { API_URL_startDetection, API_URL_getFaceLocations, API_URL_clusterFaces } from './config.js';
 import { handleResponse } from './helpers';
@@ -25,6 +26,7 @@ class App extends React.Component {
         authorization: null,
         secondsRemaining: null
       },
+      landingPage: false,
       loading: false,
       videoMetadata: {},
       videoURL: 'youtu.be/iYZbQIXoVMY',//'0_6AK52kSVQ',//'dIBsEtQyKcA',//'HsRX4myHr4o',
@@ -51,9 +53,9 @@ class App extends React.Component {
     
     groupClassification[id] = groupClassification[id] === classification ? null : classification;
     var numberPattern = /[\d.]+/g;
-    var time, faceN, index;
+    var time, index;
     for (var i=0; i<this.state.clusteredFaceImages[id].length; i++) {
-      [time, faceN] = this.state.clusteredFaceImages[id][i].match(numberPattern);
+      time = this.state.clusteredFaceImages[id][i].match(numberPattern)[0];
       index = time * videoMetadata.checksPerSecond;
       faceTS[index] = [];
     }
@@ -296,64 +298,74 @@ class App extends React.Component {
     }
   }
 
+  leaveLandingPage = () => {
+    this.setState({landingPage: false})
+  }
+
   render() {
 
-    return (
-      <div className='App'>
-        <Header 
-          selectedTab={this.state.view}
-          user={this.state.user}
-          loading={this.state.loading}
-          responseGoogleSuccess={this.responseGoogleSuccess}
-          responseGoogleFailure={this.responseGoogleFailure}
-          responseGoogleLogout={this.responseGoogleLogout}
-          handleViewClick={this.handleViewClick} />
-        {this.state.loading && <Loading size='medium'/>}
-        <VideoDisplay
-          visible={this.state.view === 'video'}
-          user={this.state.user}
-          videoURL={this.state.videoURL}
-          videoID={this.state.videoID}
-          videoType={this.state.videoType}
-          allFaceLocations={this.state.allFaceLocations}
-          faceGroupTS={this.state.faceGroupTS}
-          faceTS={this.state.faceTS}
-          groupClassification={this.state.groupClassification}
-          labelColours={this.state.labelColours}
-          height={this.state.videoMetadata.height}
-          width={this.state.videoMetadata.width}
-          checksPerSecond={this.state.videoMetadata.checksPerSecond}
-          percentageComplete={this.state.percentageComplete}
-          loading={this.state.loading}
-          setVideoID={this.setVideoID}
-          handleVideoURLChange={this.handleVideoURLChange}
-          startDetection={this.startDetection} />
-        <FacesDisplay
-          visible={this.state.view === 'faces'}
-          loading={this.state.loading}
-          complete={this.state.percentageComplete === 100}
-          groupClassification={this.state.groupClassification}
-          faceTS={this.state.faceTS}
-          faceGroup={this.state.faceGroup}
-          videoID={this.state.videoID}
-          model={this.state.model}
-          faceImages={this.state.faceImages}
-          clusteredFaceImages={this.state.clusteredFaceImages}
-          checksPerSecond={this.state.checksPerSecond}
-          incrementFaceGroup={this.incrementFaceGroup}
-          decrementFaceGroup={this.decrementFaceGroup}
-          classifyGroup={this.classifyGroup}
-          clickClassifyFace={this.clickClassifyFace}
-          hoverClassifyFace={this.hoverClassifyFace} />
-        <ResultsDisplay
-          visible={this.state.view === 'results'}
-          labelColours={this.state.labelColours}
-          groupClassification={this.state.groupClassification}
-          faceGroupTS={this.state.faceGroupTS}
-          faceTS={this.state.faceTS}
-          checksPerSecond={this.state.checksPerSecond} />
-      </div>
-    );
+    if ( this.state.landingPage ) {
+      return (
+        <LandingPage leaveLandingPage={this.leaveLandingPage} />
+      )
+    } else {
+      return (
+        <div className='App'>
+          <Header 
+            selectedTab={this.state.view}
+            user={this.state.user}
+            loading={this.state.loading}
+            responseGoogleSuccess={this.responseGoogleSuccess}
+            responseGoogleFailure={this.responseGoogleFailure}
+            responseGoogleLogout={this.responseGoogleLogout}
+            handleViewClick={this.handleViewClick} />
+          {this.state.loading && <Loading size='medium'/>}
+          <VideoDisplay
+            visible={this.state.view === 'video'}
+            user={this.state.user}
+            videoURL={this.state.videoURL}
+            videoID={this.state.videoID}
+            videoType={this.state.videoType}
+            allFaceLocations={this.state.allFaceLocations}
+            faceGroupTS={this.state.faceGroupTS}
+            faceTS={this.state.faceTS}
+            groupClassification={this.state.groupClassification}
+            labelColours={this.state.labelColours}
+            height={this.state.videoMetadata.height}
+            width={this.state.videoMetadata.width}
+            checksPerSecond={this.state.videoMetadata.checksPerSecond}
+            percentageComplete={this.state.percentageComplete}
+            loading={this.state.loading}
+            setVideoID={this.setVideoID}
+            handleVideoURLChange={this.handleVideoURLChange}
+            startDetection={this.startDetection} />
+          <FacesDisplay
+            visible={this.state.view === 'faces'}
+            loading={this.state.loading}
+            complete={this.state.percentageComplete === 100}
+            groupClassification={this.state.groupClassification}
+            faceTS={this.state.faceTS}
+            faceGroup={this.state.faceGroup}
+            videoID={this.state.videoID}
+            model={this.state.model}
+            faceImages={this.state.faceImages}
+            clusteredFaceImages={this.state.clusteredFaceImages}
+            checksPerSecond={this.state.checksPerSecond}
+            incrementFaceGroup={this.incrementFaceGroup}
+            decrementFaceGroup={this.decrementFaceGroup}
+            classifyGroup={this.classifyGroup}
+            clickClassifyFace={this.clickClassifyFace}
+            hoverClassifyFace={this.hoverClassifyFace} />
+          <ResultsDisplay
+            visible={this.state.view === 'results'}
+            labelColours={this.state.labelColours}
+            groupClassification={this.state.groupClassification}
+            faceGroupTS={this.state.faceGroupTS}
+            faceTS={this.state.faceTS}
+            checksPerSecond={this.state.checksPerSecond} />
+        </div>
+      );
+    }
   }
   
 }

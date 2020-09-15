@@ -1,6 +1,7 @@
 import React from 'react';
 
 import MainPage from './MainPage';
+import Instructions from './Instructions';
 import FacesUnclustered from './FacesUnclustered';
 import FacesClustered from './FacesClustered';
 
@@ -10,9 +11,10 @@ const FaceDisplay = (props) => {
 
     return (
         <MainPage visible={props.visible}>
+            <Instructions tab='faces' />
             <div align='center'>
                 {!props.loading && props.faceImages.length === 0 && 
-                'No faces detected yet...'}
+                'No faces detected yet.'}
                 {!clustered && props.loading &&
                 <div>Detecting faces...
                     <FacesUnclustered

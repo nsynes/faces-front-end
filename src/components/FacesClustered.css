@@ -6,7 +6,7 @@
 }
 @media all and (min-width: 801px) {
     .face-group-container {
-        padding: 1em;
+        padding: 4em 1em 1em 1em;
         margin: 0 4em 4em 4em;
     }
 }

@@ -9,7 +9,7 @@ function FaceImage(props) {
             onClick={(evt) => props.clustered && props.clickClassifyFace(evt, props.imagePath.replace(/^.*[\\/]/, ''), props.currentClassification)}
             onContextMenu={(evt) => props.clustered && props.clickClassifyFace(evt, props.imagePath.replace(/^.*[\\/]/, ''), props.currentClassification)}
             onMouseEnter={(evt) => props.clustered && props.hoverClassifyFace(evt, props.imagePath.replace(/^.*[\\/]/, ''), props.currentClassification)}
-            alt="Face image" />
+            alt="Face" />
     );
 }
 
