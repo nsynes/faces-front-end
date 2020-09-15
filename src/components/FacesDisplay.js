@@ -6,26 +6,34 @@ import FacesClustered from './FacesClustered';
 
 const FaceDisplay = (props) => {
 
+    const clustered = Object.keys(props.clusteredFaceImages).length > 0;
+
     return (
         <MainPage visible={props.visible}>
             <div align='center'>
-                {props.faceImages.length === 0 && 
+                {!props.loading && props.faceImages.length === 0 && 
                 'No faces detected yet...'}
-                {props.complete &&
-                <button onClick={props.clusterFaces}>Cluster</button>}
-                {!props.clustered &&
-                <FacesUnclustered
-                    faceImages={props.faceImages}
-                    videoID={props.videoID}
-                    model={props.model} />}
-                {props.clustered &&
+                {!clustered && props.loading &&
+                <div>Detecting faces...
+                    <FacesUnclustered
+                        faceImages={props.faceImages}
+                        videoID={props.videoID}
+                        model={props.model} />
+                </div>}
+                { clustered &&
                 <FacesClustered
                     clusteredFaceImages={props.clusteredFaceImages}
-                    faceClassification={props.faceClassification}
                     groupClassification={props.groupClassification}
+                    faceTS={props.faceTS}
+                    faceGroup={props.faceGroup}
                     videoID={props.videoID}
                     model={props.model}
-                    classifyGroup={props.classifyGroup}/>}
+                    checksPerSecond={props.checksPerSecond} 
+                    incrementFaceGroup={props.incrementFaceGroup}
+                    decrementFaceGroup={props.decrementFaceGroup}
+                    classifyGroup={props.classifyGroup}
+                    clickClassifyFace={props.clickClassifyFace}
+                    hoverClassifyFace={props.hoverClassifyFace} />}
             </div>
         </MainPage>
     )

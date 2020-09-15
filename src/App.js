@@ -8,7 +8,6 @@ import ResultsDisplay from './components/ResultsDisplay';
 import './App.css';
 import { API_URL_startDetection, API_URL_getFaceLocations, API_URL_clusterFaces } from './config.js';
 import { handleResponse } from './helpers';
-
 var collectInterval;
 
 class App extends React.Component {
@@ -27,56 +26,62 @@ class App extends React.Component {
         secondsRemaining: null
       },
       loading: false,
-      videoTextBox: 'iYZbQIXoVMY',//'dIBsEtQyKcA',//'HsRX4myHr4o',
-      videoID:'iYZbQIXoVMY',//'dIBsEtQyKcA',//'HsRX4myHr4o',
-      videoType: 'youtube',
+      videoMetadata: {},
+      videoURL: 'youtu.be/iYZbQIXoVMY',//'0_6AK52kSVQ',//'dIBsEtQyKcA',//'HsRX4myHr4o',
+      videoID: '',
       faceMaxTime: 0,
       percentageComplete: 0,
-      complete: false,
       checksPerSecond: 2,
       allFaceLocations: [],
-      allFaceGroups: [], //[null,["-1","-1","-1"],["-1","-1","-1"],["-1","-1","-1"],["-1"],["0"],["0"],["0"],["0"],["0"],["0"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["-1"],["1"],["1"],["1"],["1"],["1"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0","2"],["0","2"],["0","2"],["0","2"],["0","2"],["0","2"],["0","2"],["0","2"],["0","2"],["0","2"],["0","2"],["0","2"],["2","0"],["2","0"],["2","0"],["2","0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["1"],["1"],["1"],["1"],["3","-1"],["3"],["3"],["3","-1"],["-1","3"],["3","-1"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["1"],["1"],["1"],["-1"],["1"],["1"],["3"],["3"],["-1"],["-1","-1"],["-1"],["-1","-1"],["3","-1"],["3"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["-1"],["-1"],["4","-1"],["4"],["4"],["4"],["4","-1"],["-1"],["-1"],["1"],["1"],["1"],["1"],["1"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["-1"],["1"],["1"],["1"],["1"],["1"],["1"],["1"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["0"],["-1"],["-1","-1"],["2","-1","5"],["-1","2","5"],["-1","2","5"],["-1","5","2"],["-1","5","2"],["-1","2","5"],["-1","5","2"],["6","5","2"],["-1","5","2"],["6","5","2"],["-1","5","2"],["-1"],["6"],["6"],["6"],["6"],["6"],["6"],["6"],["-1"],["6"],["6"],["6"],["6"],["6","-1","7"],["6","-1","7"],["-1","6","7"],["-1","-1","2"],["-1","-1","7"],["-1","-1","-1"],["1"],["1"],["1"],["8"],["8"],["8"],["8"],["8"],["8"],["8"],["8"],["8"],["8"],["8"],["8"],["8"],["-1"]],
-      labelColours: {'male':'#0000ff', 'female':'#ff1493'},
+      faceGroupTS: [],
+      faceGroup: null,
+      faceTS: [],
+      labelColours: {'male':'#0000ff', 'female':'#ff1493', '-': '#ffffff'},
       faceImages: [],
       clusteredFaceImages: {},
-      groupClassification: {},//{"0":"female","1":"male","2":"male","3":"male","4":"female","5":"female","6":"female","7":"male","8":"male","-1":"unknown"},
-      faceClassification: {},
-      allClassified: false,
-      videoMetadata: {},
+      groupClassification: {},
       faceListLength: null,
       model: 'cnn',
-      view: 'video',
-      clustered: false
+      view: 'video'
     }
   }
 
   classifyGroup = (id, classification) => {
-    var groupClassification = this.state.groupClassification;
-    groupClassification[id] = groupClassification[id] === classification ? "" : classification;
-    const allClassified = Object.values(groupClassification).every((val) => val !== "")
-    this.setState({ groupClassification: groupClassification, allClassified: allClassified })
-}
+    var { videoMetadata, groupClassification, faceTS } = this.state;
+    
+    groupClassification[id] = groupClassification[id] === classification ? null : classification;
+    var numberPattern = /[\d.]+/g;
+    var time, faceN, index;
+    for (var i=0; i<this.state.clusteredFaceImages[id].length; i++) {
+      [time, faceN] = this.state.clusteredFaceImages[id][i].match(numberPattern);
+      index = time * videoMetadata.checksPerSecond;
+      faceTS[index] = [];
+    }
+      this.setState({ faceTS: faceTS , groupClassification: groupClassification });
+    }
 
-  handleVideoTextBoxChange = (e) => {
-    console.log('handleVideoTextBoxChange', e.target.value)
-    this.setVideo(e.target.value)
+
+  handleVideoURLChange = (e) => {
+    this.setVideoURL(e.target.value)
   }
 
-  setVideo = (url) => {
+  setVideoURL = (url) => {
     this.setState({
-      videoTextBox: url,
-      videoID: url,
+      videoURL: url,
       allFaceLocations: [],
-      allFaceGroups: [],
+      faceGroupTS: [],
+      faceTS: [],
       faceImages: [],
       clusteredFaceImages: {},
       groupClassification: {},
-      faceClassification: {},
-      allClassified: false,
       videoMetadata: {},
       faceListLength: null,
       faceMaxTime: 0,
       percentageComplete: 0});
+  }
+
+  setVideoID = (id) => {
+    this.setState({videoID: id})
   }
 
   responseGoogleSuccess = (response) => {
@@ -122,7 +127,6 @@ class App extends React.Component {
     fetch(`${API_URL_startDetection}?userID=${this.state.user.ID}&videoID=${this.state.videoID}&model=${this.state.model}&checksPerSecond=${this.state.checksPerSecond}`, options)
     .then(handleResponse)
     .then((result) => {
-      console.log('started', result)
       const videoMetadata = result.data;
       const faceListLength = parseFloat(videoMetadata.totalFrames) / (parseFloat(videoMetadata.fps) / parseFloat(videoMetadata.checksPerSecond) ) + 1;
     
@@ -151,7 +155,6 @@ class App extends React.Component {
     fetch(`${API_URL_getFaceLocations}?userID=${this.state.user.ID}&videoID=${this.state.videoID}&model=${this.state.model}&checksPerSecond=${this.state.checksPerSecond}&from=${this.state.faceMaxTime}`, options)
     .then(handleResponse)
     .then((result) => {
-      console.log('faces', result)
       
       const apiData = result.data;
 
@@ -184,6 +187,10 @@ class App extends React.Component {
       const percentageComplete = result.complete ? 100 : Math.round(maxTime / (videoMetadata.totalFrames / videoMetadata.fps) * 100);
       this.setState({ user: user, allFaceLocations: allFaceLocations, faceMaxTime: maxTime, percentageComplete: percentageComplete, loading: loading, complete: result.complete })
       
+      if ( result.complete ) {
+        this.clusterFaces();
+      }
+
     })
     .catch((error) => {
         console.log('Error:', error)
@@ -199,8 +206,7 @@ class App extends React.Component {
     fetch(`${API_URL_clusterFaces}?userID=${this.state.user.ID}&videoID=${this.state.videoID}&model=${this.state.model}`, options)
     .then(handleResponse)
     .then((result) => {
-      console.log('cluster result', result)
-      var { allFaceGroups, videoMetadata } = this.state;
+      var { faceGroupTS, faceTS, videoMetadata } = this.state;
 
       var numberPattern = /[\d.]+/g;
       var time, faceN, index;
@@ -208,22 +214,86 @@ class App extends React.Component {
         for (var i=0; i < result.clusters[groupID].length; i++) {
           [time, faceN] = result.clusters[groupID][i].match(numberPattern);
           index = time * videoMetadata.checksPerSecond;
-          if ( typeof(allFaceGroups[index]) == 'undefined' ) {
-            allFaceGroups[index] = []
+          if ( typeof(faceGroupTS[index]) == 'undefined' ) {
+            faceGroupTS[index] = []
+            faceTS[index] = []
           }
-          allFaceGroups[index][parseInt(faceN)] = groupID
+          faceGroupTS[index][parseInt(faceN)] = groupID
         }
       }
       
-      this.setState({clustered: true, clusteredFaceImages: result.clusters, allFaceGroups: allFaceGroups})
+      this.setState({clusteredFaceImages: result.clusters, faceGroupTS: faceGroupTS, faceGroup: 0, faceTS: faceTS});
     })
     .catch((error) => {
       console.log('Error:', error)
     });
   }
 
+  hoverClassifyFace = (evt, imgName, currentClassification) => {
+    if ( evt.type==='mouseenter' ) {
+      var { videoMetadata, faceTS } = this.state;
+      var updateTo = null;
+      var numberPattern = /[\d.]+/g;
+      var [time, faceN] = imgName.match(numberPattern);
+      var index = time * videoMetadata.checksPerSecond;
+        if ( evt.buttons === 1) {
+          updateTo = currentClassification === 'female' ? null : 'female';
+        } else if ( evt.buttons === 2) {
+          updateTo = currentClassification === 'male' ? null : 'male';
+        }
+        if ( updateTo ) {
+          faceTS[index][parseInt(faceN)] = updateTo;
+          this.setState({ faceTS: faceTS});
+        }
+      }
+  }
+
+  clickClassifyFace = (evt, imgName, currentClassification) => {
+      evt.preventDefault();
+      if ( evt.type=== 'click' || evt.type==='contextmenu' ) {
+        var { videoMetadata, faceTS } = this.state;
+        var updateTo = null;
+        var numberPattern = /[\d.]+/g;
+        var [time, faceN] = imgName.match(numberPattern);
+        var index = time * videoMetadata.checksPerSecond;
+        if ( evt.buttons === 0 ) {
+          updateTo = currentClassification === 'female' ? '-' : 'female';
+        } else if ( evt.buttons === 2 ) {
+          updateTo = currentClassification === 'male' ? '-' : 'male';
+        }
+        faceTS[index][parseInt(faceN)] = updateTo;
+        /*
+        var updatedFaceClassification = this.state.faceClassification;
+        if ( updateTo === groupClassification ) {
+            delete updatedFaceClassification[imgName];
+        } else {
+            updatedFaceClassification[imgName] = updateTo;
+        }
+        */
+        this.setState({ faceTS: faceTS})
+      }
+  }
+
   handleViewClick = (e) => {
-    this.setState({ view: e.target.innerHTML.toLowerCase() })
+    this.setState({ view: e.target.value })
+  }
+
+  incrementFaceGroup = () => {
+    var { faceGroup } = this.state;
+    if ( faceGroup !== -1 && Object.keys(this.state.clusteredFaceImages).indexOf(String(faceGroup + 1)) > -1 ) {
+      this.setState({ faceGroup: faceGroup + 1});
+    } else {
+      this.setState({ faceGroup: -1});
+    }
+  }
+
+  decrementFaceGroup = () => {
+    var { faceGroup } = this.state
+    if ( faceGroup > 0 ) {
+      this.setState({ faceGroup: faceGroup-1});
+    } else if ( faceGroup === -1 ) {
+      this.setState({ faceGroup: Math.max(...Object.keys(this.state.clusteredFaceImages))});
+    }
   }
 
   render() {
@@ -234,46 +304,53 @@ class App extends React.Component {
           selectedTab={this.state.view}
           user={this.state.user}
           loading={this.state.loading}
-          videoTextBox={this.state.videoTextBox}
-          videoID={this.state.videoID}
           responseGoogleSuccess={this.responseGoogleSuccess}
           responseGoogleFailure={this.responseGoogleFailure}
           responseGoogleLogout={this.responseGoogleLogout}
-          handleVideoTextBoxChange={this.handleVideoTextBoxChange}
-          setVideo={this.setVideo}
-          startDetection={this.startDetection}
           handleViewClick={this.handleViewClick} />
         {this.state.loading && <Loading size='medium'/>}
         <VideoDisplay
           visible={this.state.view === 'video'}
+          user={this.state.user}
+          videoURL={this.state.videoURL}
           videoID={this.state.videoID}
           videoType={this.state.videoType}
           allFaceLocations={this.state.allFaceLocations}
-          allFaceGroups={this.state.allFaceGroups}
+          faceGroupTS={this.state.faceGroupTS}
+          faceTS={this.state.faceTS}
           groupClassification={this.state.groupClassification}
           labelColours={this.state.labelColours}
           height={this.state.videoMetadata.height}
           width={this.state.videoMetadata.width}
           checksPerSecond={this.state.videoMetadata.checksPerSecond}
           percentageComplete={this.state.percentageComplete}
-          loading={this.state.loading} />
+          loading={this.state.loading}
+          setVideoID={this.setVideoID}
+          handleVideoURLChange={this.handleVideoURLChange}
+          startDetection={this.startDetection} />
         <FacesDisplay
           visible={this.state.view === 'faces'}
-          complete={this.state.complete}
+          loading={this.state.loading}
+          complete={this.state.percentageComplete === 100}
           groupClassification={this.state.groupClassification}
-          faceClassification={this.state.faceClassification}
-          clustered={this.state.clustered}
+          faceTS={this.state.faceTS}
+          faceGroup={this.state.faceGroup}
           videoID={this.state.videoID}
           model={this.state.model}
           faceImages={this.state.faceImages}
           clusteredFaceImages={this.state.clusteredFaceImages}
+          checksPerSecond={this.state.checksPerSecond}
+          incrementFaceGroup={this.incrementFaceGroup}
+          decrementFaceGroup={this.decrementFaceGroup}
           classifyGroup={this.classifyGroup}
-          clusterFaces={this.clusterFaces} />
+          clickClassifyFace={this.clickClassifyFace}
+          hoverClassifyFace={this.hoverClassifyFace} />
         <ResultsDisplay
           visible={this.state.view === 'results'}
           labelColours={this.state.labelColours}
           groupClassification={this.state.groupClassification}
-          allFaceGroups={this.state.allFaceGroups}
+          faceGroupTS={this.state.faceGroupTS}
+          faceTS={this.state.faceTS}
           checksPerSecond={this.state.checksPerSecond} />
       </div>
     );

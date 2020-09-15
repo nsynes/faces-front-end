@@ -15,7 +15,7 @@
 }
 @media all and (max-width: 800px) {
   .loading {
-    top: 12em;
+    top: 7em;
   }
 }
 .loading.large {

@@ -6,20 +6,35 @@ import ChartToolTip from './ChartToolTip';
 
 const ResultsDisplay = (props) => {
 
-    const { allFaceGroups, groupClassification, checksPerSecond } = props;
+    const { faceGroupTS, faceTS, groupClassification, checksPerSecond } = props;
     var maleTotal = 0, femaleTotal = 0;
     var timeseries = [];
     var mCount, fCount;
-    for ( var i = 0; i < allFaceGroups.length; i++ ) {
-        if ( allFaceGroups[i] ) {
+    for ( var i = 0; i < faceGroupTS.length; i++ ) {
+        if ( faceTS[i] && faceTS[i].length > 0 ) {
             mCount=0;
             fCount=0;
-            for ( var j = 0; j < allFaceGroups[i].length; j++ ) {
-                if ( groupClassification[allFaceGroups[i][j]] === 'male' ) {
+            for ( var j = 0; j < faceTS[i].length; j++ ) {
+                if ( faceTS[i][j] === 'male' ) {
                     maleTotal += 1/checksPerSecond;
                     mCount -= 1
                 }
-                else if ( groupClassification[allFaceGroups[i][j]] === 'female' ) {
+                else if ( faceTS[i][j] === 'female' ) {
+                    femaleTotal += 1/checksPerSecond;
+                    fCount += 1;
+                }
+            }
+            timeseries.push({time: i/checksPerSecond, male: mCount, female: fCount})
+        }
+        else if ( faceGroupTS[i] ) {
+            mCount=0;
+            fCount=0;
+            for ( var j = 0; j < faceGroupTS[i].length; j++ ) {
+                if ( groupClassification[faceGroupTS[i][j]] === 'male' ) {
+                    maleTotal += 1/checksPerSecond;
+                    mCount -= 1
+                }
+                else if ( groupClassification[faceGroupTS[i][j]] === 'female' ) {
                     femaleTotal += 1/checksPerSecond;
                     fCount += 1;
                 }
@@ -30,7 +45,7 @@ const ResultsDisplay = (props) => {
     const malePercent = maleTotal/(maleTotal+femaleTotal)*100;
     const femalePercent = femaleTotal/(maleTotal+femaleTotal)*100;
     
-    if ( allFaceGroups && allFaceGroups.length > 0 ) {
+    if ( faceGroupTS && faceGroupTS.length > 0 ) {
         return (
             <MainPage visible={props.visible}>
                 <div align='center'>

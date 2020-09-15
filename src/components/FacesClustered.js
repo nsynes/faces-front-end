@@ -2,35 +2,51 @@ import React from 'react';
 
 import FaceImage from './FaceImage';
 import FaceControls from './FaceControls';
+import KeyboardArrowLeftRounded from '@material-ui/icons/KeyboardArrowLeftRounded';
+import KeyboardArrowRightRounded from '@material-ui/icons/KeyboardArrowRightRounded';
 import './FacesClustered.css';
 
 const FacesClustered = (props) => {
     
-    var FaceGroups = []
-    for (var groupID in props.clusteredFaceImages) {
-        FaceGroups.push(
-            <div className='face-group-container' key={`face${groupID}`}>
-                {props.clusteredFaceImages[groupID].map((img) => 
-                    <FaceImage
-                        clustered={true}
-                        groupID={groupID}
-                        faceClassification={props.faceClassification[img] ? props.faceClassification[img] : props.groupClassification[groupID]}
-                        groupClassification={props.groupClassification[groupID]}
-                        imagePath={`https://face-images.s3.eu-west-2.amazonaws.com/youtube/faces/${props.videoID}/${props.model}/${img}`}
-                        key={img} />)
-                }
-                <FaceControls 
-                    groupID={groupID}
-                    classifyGroup={props.classifyGroup}
-                    groupClassification={props.groupClassification}
-                    />
-            </div>
-        )
-    }
+    var numberPattern = /[\d.]+/g;
+    var time, faceN, index;
+    var totalFaceGroups = Math.max(...Object.keys(props.clusteredFaceImages)) + 2;
 
     return (
-        <div className='face-container'>
-            {FaceGroups}
+        <div>
+            <FaceControls 
+                groupID={props.faceGroup}
+                totalFaceGroups={totalFaceGroups}
+                classifyGroup={props.classifyGroup}
+                groupClassification={props.groupClassification} />
+            <button
+                className='button'
+                style={{position: 'fixed', left: 10, top: '50%'}}
+                onClick={props.decrementFaceGroup}>
+                    <KeyboardArrowLeftRounded fontSize='large' />
+            </button>
+            <button
+                className='button'
+                style={{position: 'fixed', right: 10, top: '50%'}}
+                onClick={props.incrementFaceGroup}>
+                    <KeyboardArrowRightRounded fontSize='large' />
+            </button>
+            <div className='face-container'>
+                <div className='face-group-container' key={`face${props.faceGroup}`}>
+                    {props.clusteredFaceImages[props.faceGroup].map((img) => {
+                        [time, faceN] = img.match(numberPattern);
+                        index = time * props.checksPerSecond;
+                        return <FaceImage
+                            clustered={true}
+                            groupID={props.faceGroup}
+                            currentClassification={props.faceTS[index] && props.faceTS[index].length > 0 && props.faceTS[index][parseInt(faceN)] ? props.faceTS[index][parseInt(faceN)] : props.groupClassification[props.faceGroup] }
+                            imagePath={`https://face-images.s3.eu-west-2.amazonaws.com/youtube/faces/${props.videoID}/${props.model}/${img}`}
+                            key={img}
+                            clickClassifyFace={props.clickClassifyFace}
+                            hoverClassifyFace={props.hoverClassifyFace} />
+                    })}
+                </div>
+            </div>
         </div>
     )
 }

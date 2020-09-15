@@ -5,14 +5,14 @@
     background-color: rgba(200,200,200,0.3);
 }
 @media all and (min-width: 801px) {
-.face-group-container {
-    padding: 1em;
-    margin: 0 4em 4em 4em;
-}
+    .face-group-container {
+        padding: 1em;
+        margin: 0 4em 4em 4em;
+    }
 }
 @media all and (max-width: 800px) {
-.face-group-container {
-    padding: 0 0 1em 0;
-    margin: 0.5em;
-}
+    .face-group-container {
+        padding: 0 0 1em 0;
+        margin: 0.5em;
+    }
 }

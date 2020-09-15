@@ -2,14 +2,14 @@ import React from 'react';
 import './FaceImage.css';
 
 function FaceImage(props) {
-
     return (
         <img
-            className={`${props.faceClassification}`}
+            className={`${props.currentClassification}`}
             src={props.imagePath}
-            alt=""
-            height="60"
-            width="60" />
+            onClick={(evt) => props.clustered && props.clickClassifyFace(evt, props.imagePath.replace(/^.*[\\/]/, ''), props.currentClassification)}
+            onContextMenu={(evt) => props.clustered && props.clickClassifyFace(evt, props.imagePath.replace(/^.*[\\/]/, ''), props.currentClassification)}
+            onMouseEnter={(evt) => props.clustered && props.hoverClassifyFace(evt, props.imagePath.replace(/^.*[\\/]/, ''), props.currentClassification)}
+            alt="Face image" />
     );
 }
 
