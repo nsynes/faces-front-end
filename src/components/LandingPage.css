@@ -1,20 +1,28 @@
 .landing-page {
     background-color: rgb(40,40,40);
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .overlay {
     background-image: url('../img/face-capture-screenshot.jpg');
     background-repeat: no-repeat;
-    background-position: center center;
-    height: 100vh;
+    background-position: top center;
 }
 
 .intro-text {
     color: white;
     font-size: 20pt;
-    padding: 4em 2em;
 }
+@media all and (min-width: 801px) {
+    .intro-text {
+        padding: 4em 2em;
+    }
+  }
+  @media all and (max-width: 800px) {
+    .intro-text {
+        padding: 2em .5em;
+    }
+  }
 
 .get-started {
     font-size: 30pt;
