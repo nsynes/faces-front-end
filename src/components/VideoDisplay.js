@@ -4,6 +4,8 @@ import MainPage from './MainPage';
 import Instructions from './Instructions';
 import Video from './Video';
 
+import './VideoDisplay.css';
+
 const VideoDisplay = (props) => {
   
   return (
@@ -26,23 +28,31 @@ const VideoDisplay = (props) => {
         <span style={{color: 'red'}}>Login (top right)</span>}
       </div>
       <div className='video-top-container'>
-        <div className='video-container'>
-        <Video
-          videoURL={props.videoURL}
-          allFaceLocations={props.allFaceLocations}
-          faceGroupTS={props.faceGroupTS}
-          faceTS={props.faceTS}
-          groupClassification={props.groupClassification}
-          labelColours={props.labelColours}
-          checksPerSecond={props.checksPerSecond}
-          setVideoID={props.setVideoID} />
-        </div>
         <div className='video-details'>
           <div className='percentage-box'>
             <div style={{position: 'absolute', left: 0, backgroundColor: 'red', width: props.percentageComplete+'%', height: 5}} />
           </div>
           Face detection: {props.percentageComplete}%
         </div>
+        <div className='video-container'>
+          <Video
+            videoURL={props.videoURL}
+            allFaceLocations={props.allFaceLocations}
+            faceGroupTS={props.faceGroupTS}
+            faceTS={props.faceTS}
+            groupClassification={props.groupClassification}
+            labelColours={props.labelColours}
+            checksPerSecond={props.checksPerSecond}
+            setVideoID={props.setVideoID} />
+        </div>
+      </div>
+      <br />
+      <div align='center'>
+        Try some free, ready processed videos:
+        <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/uPSUas961PU')}>This Country: youtu.be/uPSUas961PU</div>
+        <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/1ZSw1oi3Q3U')}>This Morning: youtu.be/1ZSw1oi3Q3U</div>
+        <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/iYZbQIXoVMY')}>Graham Norton Show: youtu.be/iYZbQIXoVMY</div>
+        <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/h1xxC_Rr__U')}>Channel 4 Trailer: youtu.be/h1xxC_Rr__U</div>
       </div>
     </MainPage>
   );

@@ -6,7 +6,7 @@ function FaceImage(props) {
         <img
             className={`${props.currentClassification}`}
             src={props.imagePath}
-            onClick={(evt) => props.clustered && props.clickClassifyFace(evt, props.imagePath.replace(/^.*[\\/]/, ''), props.currentClassification)}
+            onMouseDown={(evt) => props.clustered && props.clickClassifyFace(evt, props.imagePath.replace(/^.*[\\/]/, ''), props.currentClassification)}
             onContextMenu={(evt) => props.clustered && props.clickClassifyFace(evt, props.imagePath.replace(/^.*[\\/]/, ''), props.currentClassification)}
             onMouseEnter={(evt) => props.clustered && props.hoverClassifyFace(evt, props.imagePath.replace(/^.*[\\/]/, ''), props.currentClassification)}
             alt="Face" />

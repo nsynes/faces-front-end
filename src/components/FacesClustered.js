@@ -19,14 +19,14 @@ const FacesClustered = (props) => {
                 totalFaceGroups={totalFaceGroups}
                 classifyGroup={props.classifyGroup}
                 groupClassification={props.groupClassification} />
-            {props.faceGroup !== 0 &&
+            {props.faceGroup !== 0 && Object.keys(props.clusteredFaceImages).length > 1 &&
             <button
                 className='button'
                 style={{position: 'fixed', left: 10, top: '50%'}}
                 onClick={props.decrementFaceGroup}>
                     <KeyboardArrowLeftRounded fontSize='large' />
             </button>}
-            {props.faceGroup !== -1 && 
+            {props.faceGroup !== -1 && Object.keys(props.clusteredFaceImages).length > 1 && 
             <button
                 className='button'
                 style={{position: 'fixed', right: 10, top: '50%'}}

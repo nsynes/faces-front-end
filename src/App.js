@@ -68,10 +68,13 @@ class App extends React.Component {
   }
 
   setVideoURL = (url) => {
+    console.log('setVideoURL', url)
     this.setState({
       videoURL: url,
+      videoID: '',
       allFaceLocations: [],
       faceGroupTS: [],
+      faceGroup: null,
       faceTS: [],
       faceImages: [],
       clusteredFaceImages: {},
@@ -208,6 +211,7 @@ class App extends React.Component {
     fetch(`${API_URL_clusterFaces}?userID=${this.state.user.ID}&videoID=${this.state.videoID}&model=${this.state.model}`, options)
     .then(handleResponse)
     .then((result) => {
+      
       var { faceGroupTS, faceTS, videoMetadata } = this.state;
 
       var numberPattern = /[\d.]+/g;
@@ -223,8 +227,8 @@ class App extends React.Component {
           faceGroupTS[index][parseInt(faceN)] = groupID
         }
       }
-      
-      this.setState({clusteredFaceImages: result.clusters, faceGroupTS: faceGroupTS, faceGroup: 0, faceTS: faceTS});
+      var faceGroup = Object.keys(result.clusters).length === 1 ? Object.keys(result.clusters)[0] : 0;
+      this.setState({clusteredFaceImages: result.clusters, faceGroupTS: faceGroupTS, faceGroup: faceGroup, faceTS: faceTS});
     })
     .catch((error) => {
       console.log('Error:', error)
@@ -245,6 +249,7 @@ class App extends React.Component {
         }
         if ( updateTo ) {
           faceTS[index][parseInt(faceN)] = updateTo;
+
           this.setState({ faceTS: faceTS});
         }
       }
@@ -252,26 +257,19 @@ class App extends React.Component {
 
   clickClassifyFace = (evt, imgName, currentClassification) => {
       evt.preventDefault();
-      if ( evt.type=== 'click' || evt.type==='contextmenu' ) {
+      if ( (evt.type=== 'mousedown' && evt.button === 0) || (evt.type==='contextmenu' && evt.button === 2) ) {
         var { videoMetadata, faceTS } = this.state;
         var updateTo = null;
         var numberPattern = /[\d.]+/g;
         var [time, faceN] = imgName.match(numberPattern);
         var index = time * videoMetadata.checksPerSecond;
-        if ( evt.buttons === 0 ) {
+        if ( evt.button === 0 ) {
           updateTo = currentClassification === 'female' ? '-' : 'female';
-        } else if ( evt.buttons === 2 ) {
+        } else if ( evt.button === 2 ) {
           updateTo = currentClassification === 'male' ? '-' : 'male';
         }
         faceTS[index][parseInt(faceN)] = updateTo;
-        /*
-        var updatedFaceClassification = this.state.faceClassification;
-        if ( updateTo === groupClassification ) {
-            delete updatedFaceClassification[imgName];
-        } else {
-            updatedFaceClassification[imgName] = updateTo;
-        }
-        */
+
         this.setState({ faceTS: faceTS})
       }
   }
@@ -336,6 +334,7 @@ class App extends React.Component {
             checksPerSecond={this.state.videoMetadata.checksPerSecond}
             percentageComplete={this.state.percentageComplete}
             loading={this.state.loading}
+            setVideoURL={this.setVideoURL}
             setVideoID={this.setVideoID}
             handleVideoURLChange={this.handleVideoURLChange}
             startDetection={this.startDetection} />
@@ -364,6 +363,8 @@ class App extends React.Component {
             groupClassification={this.state.groupClassification}
             labelColours={this.state.labelColours}
             checksPerSecond={this.state.checksPerSecond}
+            totalFrames={this.state.videoMetadata.totalFrames}
+            fps={this.state.videoMetadata.fps}
             setVideoID={this.setVideoID}
             visible={this.state.view === 'results'}
             labelColours={this.state.labelColours}
@@ -371,6 +372,7 @@ class App extends React.Component {
             faceGroupTS={this.state.faceGroupTS}
             faceTS={this.state.faceTS}
             checksPerSecond={this.state.checksPerSecond} />
+          <br />
         </div>
       );
     }

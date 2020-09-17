@@ -5,8 +5,9 @@
 
 .overlay {
     background-image: url('../img/face-capture-screenshot.jpg');
-    background-repeat: no-repeat;
+    background-repeat: repeat;
     background-position: top center;
+    min-height: 100vh;
 }
 
 .intro-text {

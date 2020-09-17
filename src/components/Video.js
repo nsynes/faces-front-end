@@ -21,7 +21,7 @@ class Video extends React.Component {
 
   onPlayVideo() {
     videoInterval = setInterval(() => {
-        if ( this.props.checksPerSecond ) {
+        if ( this.player && this.props.checksPerSecond ) {
           const n = Math.floor(this.player.getCurrentTime() * this.props.checksPerSecond)
           this.setState({ faceLocations: this.props.allFaceLocations[n], n: n })
         }
@@ -40,7 +40,8 @@ class Video extends React.Component {
     } else {
       videoID = e.props.url.split('youtu.be/')[1]
     }
-    this.props.setVideoID(videoID)
+    this.props.setVideoID(videoID);
+    this.setState({n: null, faceLocations: []});
   }
 
   getQueryParams = (url) => {
@@ -62,7 +63,8 @@ class Video extends React.Component {
 
   onError = (error) => {
     console.log('onError', error)
-    this.props.setVideoID('')
+    this.props.setVideoID('');
+    this.setState({n: null, faceLocations: []})
   }
 
   ref = player => {
@@ -85,6 +87,8 @@ class Video extends React.Component {
         return <div className='face-box' key={`${loc}`}
                   style={{top: `${loc[0]}%`, left: `${loc[3]}%`, width: `${(loc[1]-loc[3])}%`, height: `${(loc[2]-loc[0])}%`, color: boxColour}} />
       })
+    } else {
+      var faceBoxes = null;
     }
 
     return (

@@ -43,6 +43,9 @@ const ResultsDisplay = (props) => {
             timeseries.push({time: i/checksPerSecond, male: mCount, female: fCount})
         }
     }
+    // Add blank data after end of video time to ensure full graph is shown
+    timeseries.push({time: props.totalFrames/props.fps+1, male: 0, female: 0})
+    
     const malePercent = maleTotal/(maleTotal+femaleTotal)*100;
     const femalePercent = femaleTotal/(maleTotal+femaleTotal)*100;
     

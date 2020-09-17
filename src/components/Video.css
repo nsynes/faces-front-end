@@ -14,18 +14,19 @@
 .video-details {
     position: relative;
     text-align: center;
-    margin: .75em .75em 0 .75em;
+    margin: .75em .75em .25em .75em;
 }
 .video-top-container {
     margin: auto;
-    border: 1px solid rgba(100,100,100,0.5);;
+    border: 1px solid rgba(100,100,100,0.5);
     box-shadow: 0 0 2pt 1pt rgba(100,100,100,0.5);
 }
 .video-container {
     position: relative;
     padding-top: 56.25%; /* Player ratio: 100 / (1280 / 720) */
-    width: 100%;
+    width: calc(100%-1px);
     height: 100%;
+    border: 1px solid rgba(100,100,100,0.5);
 }
 .react-player {
     position: absolute;
