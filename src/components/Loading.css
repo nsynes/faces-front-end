@@ -1,22 +1,13 @@
 .loading {
   display: inline-block;
-  position: absolute;
   border-style: solid;
   border-right-color: rgba(128, 128, 128, 0.25);
   border-radius: 50%;
   opacity: 0.7;
   animation: rotate 1s infinite ease-in-out, color-transition 1s infinite ease-in-out;
   z-index: 2;
-}
-@media all and (min-width: 801px) {
-  .loading {
-    top: 3.5em;
-  }
-}
-@media all and (max-width: 800px) {
-  .loading {
-    top: 6.5em;
-  }
+  vertical-align: middle;
+  margin: 0 .5em;
 }
 .loading.large {
   border-width: 10px;

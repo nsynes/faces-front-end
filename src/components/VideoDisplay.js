@@ -3,6 +3,7 @@ import React from 'react';
 import MainPage from './MainPage';
 import Instructions from './Instructions';
 import Video from './Video';
+import Loading from './Loading';
 
 import './VideoDisplay.css';
 
@@ -26,6 +27,7 @@ const VideoDisplay = (props) => {
         </button>
         {!props.user.loggedIn &&
         <span style={{color: 'red'}}>Login (top right)</span>}
+        {props.loading && <Loading size='small' />}
       </div>
       <div className='video-top-container'>
         <div className='video-details'>
@@ -49,7 +51,7 @@ const VideoDisplay = (props) => {
       <br />
       <div align='center'>
         Try some free, ready processed videos:
-        <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/uPSUas961PU')}>This Country: youtu.be/uPSUas961PU</div>
+        <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/Ori23ZvNPsA')}>The One Show: youtu.be/Ori23ZvNPsA</div>
         <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/1ZSw1oi3Q3U')}>This Morning: youtu.be/1ZSw1oi3Q3U</div>
         <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/iYZbQIXoVMY')}>Graham Norton Show: youtu.be/iYZbQIXoVMY</div>
         <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/h1xxC_Rr__U')}>Channel 4 Trailer: youtu.be/h1xxC_Rr__U</div>

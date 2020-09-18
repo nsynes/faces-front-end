@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Header from './components/Header';
-import Loading from './components/Loading';
 import VideoDisplay from './components/VideoDisplay';
 import FacesDisplay from './components/FacesDisplay';
 import ResultsDisplay from './components/ResultsDisplay';
@@ -125,6 +124,7 @@ class App extends React.Component {
 
   startDetection = () => {
     this.setState({loading: true})
+    console.log('startDetection')
 
     const authHeader = new Headers({ 'Authorization': this.state.user.authorization, 'Content-Type': 'application/json' });
     const options = { headers: authHeader };
@@ -153,6 +153,7 @@ class App extends React.Component {
   }
 
   getFaceLocations = () => {
+    console.log('getFaceLocations')
 
     const authHeader = new Headers({ 'Authorization': this.state.user.authorization, 'Content-Type': 'application/json' });
     const options = { headers: authHeader };
@@ -312,12 +313,10 @@ class App extends React.Component {
           <Header 
             selectedTab={this.state.view}
             user={this.state.user}
-            loading={this.state.loading}
             responseGoogleSuccess={this.responseGoogleSuccess}
             responseGoogleFailure={this.responseGoogleFailure}
             responseGoogleLogout={this.responseGoogleLogout}
             handleViewClick={this.handleViewClick} />
-          {this.state.loading && <Loading size='medium'/>}
           <VideoDisplay
             visible={this.state.view === 'video'}
             user={this.state.user}

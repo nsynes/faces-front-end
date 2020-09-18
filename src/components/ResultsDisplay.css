@@ -1,0 +1,13 @@
+
+@media all and (min-width: 801px) {
+    .graph-container {
+        width: 50%;
+        height: 250px
+    }
+}
+@media all and (max-width: 800px) {
+    .graph-container {
+        width: 95%;
+        height: 250px;
+    }
+}
