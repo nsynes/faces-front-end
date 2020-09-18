@@ -8,6 +8,12 @@ import Loading from './Loading';
 import './VideoDisplay.css';
 
 const VideoDisplay = (props) => {
+
+  var {errorMsg} = props
+
+  errorMsg = props.user.loggedIn ? errorMsg : 'Log in (top right)';
+
+  console.log('errorMsg', errorMsg)
   
   return (
     <MainPage visible={props.visible}>
@@ -23,10 +29,10 @@ const VideoDisplay = (props) => {
         <button
             className='button'
             onClick={props.startDetection}
-            disabled={(props.videoID && props.user.loggedIn) ? false : true}>Find faces
+            disabled={(!props.loading && props.videoID && props.user.loggedIn) ? false : true}>Find faces
         </button>
-        {!props.user.loggedIn &&
-        <span style={{color: 'red'}}>Login (top right)</span>}
+        {errorMsg &&
+        <div style={{color: 'red'}}>{errorMsg}</div>}
         {props.loading && <Loading size='small' />}
       </div>
       <div className='video-top-container'>

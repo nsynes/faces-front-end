@@ -27,6 +27,7 @@ class App extends React.Component {
       },
       landingPage: true,
       loading: false,
+      errorMsg: '',
       videoMetadata: {},
       videoURL: '',//'youtu.be/iYZbQIXoVMY',//'0_6AK52kSVQ',//'dIBsEtQyKcA',//'HsRX4myHr4o',
       videoID: '',
@@ -69,6 +70,7 @@ class App extends React.Component {
   setVideoURL = (url) => {
     console.log('setVideoURL', url)
     this.setState({
+      errorMsg: '',
       videoURL: url,
       videoID: '',
       allFaceLocations: [],
@@ -124,7 +126,7 @@ class App extends React.Component {
 
   startDetection = () => {
     this.setState({loading: true})
-    console.log('startDetection')
+    console.log('startDetection...')
 
     const authHeader = new Headers({ 'Authorization': this.state.user.authorization, 'Content-Type': 'application/json' });
     const options = { headers: authHeader };
@@ -132,6 +134,7 @@ class App extends React.Component {
     fetch(`${API_URL_startDetection}?userID=${this.state.user.ID}&videoID=${this.state.videoID}&model=${this.state.model}&checksPerSecond=${this.state.checksPerSecond}`, options)
     .then(handleResponse)
     .then((result) => {
+      console.log('startDetection', result)
       const videoMetadata = result.data;
       const faceListLength = parseFloat(videoMetadata.totalFrames) / (parseFloat(videoMetadata.fps) / parseFloat(videoMetadata.checksPerSecond) ) + 1;
     
@@ -149,6 +152,8 @@ class App extends React.Component {
     })
     .catch((error) => {
       console.log('Error:', error)
+
+      this.setState({loading: false, errorMsg: error.message})
     });
   }
 
@@ -200,6 +205,8 @@ class App extends React.Component {
     })
     .catch((error) => {
         console.log('Error:', error)
+
+        this.setState({loading: false})
     });
 
   }
@@ -233,6 +240,8 @@ class App extends React.Component {
     })
     .catch((error) => {
       console.log('Error:', error)
+
+      this.setState({loading: false})
     });
   }
 
@@ -320,6 +329,7 @@ class App extends React.Component {
           <VideoDisplay
             visible={this.state.view === 'video'}
             user={this.state.user}
+            errorMsg={this.state.errorMsg}
             videoURL={this.state.videoURL}
             videoID={this.state.videoID}
             videoType={this.state.videoType}
