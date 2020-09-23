@@ -77,6 +77,7 @@ const ResultsDisplay = (props) => {
                         <br />
                         <ResponsiveContainer>
                             <BarChart
+                                width={730} height={250} 
                                 data={timeseries}
                                 stackOffset="sign"
                                 margin={{top: 0, right: 0, left: 0, bottom: 0}}

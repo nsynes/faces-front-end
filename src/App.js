@@ -135,25 +135,30 @@ class App extends React.Component {
     .then(handleResponse)
     .then((result) => {
       console.log('startDetection', result)
-      const videoMetadata = result.data;
-      const faceListLength = parseFloat(videoMetadata.totalFrames) / (parseFloat(videoMetadata.fps) / parseFloat(videoMetadata.checksPerSecond) ) + 1;
-    
-      var { user } = this.state;
-      user.secondsRemaining = result.user.secondsRemaining;
-      this.setState({ user: user, videoMetadata: videoMetadata, faceListLength: faceListLength })
+      if ( result.data ) {
+        const videoMetadata = result.data;
+        const faceListLength = parseFloat(videoMetadata.totalFrames) / (parseFloat(videoMetadata.fps) / parseFloat(videoMetadata.checksPerSecond) ) + 1;
       
-      if ( result.complete ) {
-        this.getFaceLocations();
-      } else {
-        collectInterval = setInterval(() => {
+        var { user } = this.state;
+        user.secondsRemaining = result.user.secondsRemaining;
+        this.setState({ user: user, videoMetadata: videoMetadata, faceListLength: faceListLength })
+        
+        if ( result.complete ) {
           this.getFaceLocations();
-        }, 5000);
+        } else {
+          collectInterval = setInterval(() => {
+            this.getFaceLocations();
+          }, 5000);
+        }
+      } else {
+        this.setState({loading: false, errorMsg: result.message})
       }
+      
     })
     .catch((error) => {
       console.log('Error:', error)
 
-      this.setState({loading: false, errorMsg: error.message})
+      this.setState({loading: false})
     });
   }
 

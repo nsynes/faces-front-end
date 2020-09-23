@@ -16,12 +16,12 @@
 }
 @media all and (min-width: 801px) {
     .intro-text {
-        padding: 4em 2em;
+        padding: 2em 2em;
     }
   }
   @media all and (max-width: 800px) {
     .intro-text {
-        padding: 2em .5em;
+        padding: 1em .5em;
     }
   }
 
