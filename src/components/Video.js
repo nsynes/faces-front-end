@@ -62,7 +62,9 @@ class Video extends React.Component {
   }
 
   onError = (error) => {
-    console.log('onError', error)
+    if ( error ) {
+      console.log('onError', error)
+    }
     this.props.setVideoID('');
     this.setState({n: null, faceLocations: []})
   }
@@ -77,8 +79,9 @@ class Video extends React.Component {
     const { n, faceLocations } = this.state;
     var boxColour;
     
+    var faceBoxes;
     if ( faceLocations ) {
-      var faceBoxes = faceLocations.map((loc, ix) => {
+      faceBoxes = faceLocations.map((loc, ix) => {
         if ( faceTS[n] && faceTS[n][ix] ) {
           boxColour = faceTS[n] && faceTS[n][ix] ? labelColours[faceTS[n][ix]] : '#ffffff';
         } else {
@@ -88,7 +91,7 @@ class Video extends React.Component {
                   style={{top: `${loc[0]}%`, left: `${loc[3]}%`, width: `${(loc[1]-loc[3])}%`, height: `${(loc[2]-loc[0])}%`, color: boxColour}} />
       })
     } else {
-      var faceBoxes = null;
+      faceBoxes = null;
     }
 
     return (

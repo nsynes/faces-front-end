@@ -68,16 +68,11 @@ const ResultsDisplay = (props) => {
                                 setVideoID={props.setVideoID} />
                         </div>
                     </div>
-                    <br />
-                    <br />
-                    <br />
                     <div className='graph-container'>
                         <u><b>Time series</b></u>
-                        <br />
-                        <br />
-                        <ResponsiveContainer>
+                        <br /><br />
+                        <ResponsiveContainer width='100%' height={250}  >
                             <BarChart
-                                width={730} height={250} 
                                 data={timeseries}
                                 stackOffset="sign"
                                 margin={{top: 0, right: 0, left: 0, bottom: 0}}
@@ -92,15 +87,14 @@ const ResultsDisplay = (props) => {
                                 <Bar dataKey="female" fill={props.labelColours['female']} stackId="stack" />
                             </BarChart>
                         </ResponsiveContainer>
-                        <br />
-                        <br />
-                        <br />
-                        <br />
+                    </div>
+                    <div className='graph-container'>
                         <u><b>Overall screen time</b></u>
-                        <br />
-                        <br />
-                        <ResponsiveContainer>
-                            <BarChart width={730} height={250} data={[{name: '', male: malePercent, female: femalePercent}]}>
+                        <br /><br />
+                        <ResponsiveContainer width='100%' height={250}  >
+                            <BarChart
+                                margin={{top: 0, right: 0, left: 0, bottom: 0}}
+                                data={[{name: '', male: malePercent, female: femalePercent}]}>
                             <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="name" />
                                 <YAxis tickFormatter={(label) => `${label}%`}/>
@@ -119,7 +113,7 @@ const ResultsDisplay = (props) => {
             <MainPage visible={props.visible}>
                 <div align='center'>
                     <br />
-                    No results yet.
+                    <div style={{color: 'red'}}>No results yet.</div>
                 </div>
             </MainPage>
         )

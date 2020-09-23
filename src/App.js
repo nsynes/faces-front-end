@@ -68,7 +68,6 @@ class App extends React.Component {
   }
 
   setVideoURL = (url) => {
-    console.log('setVideoURL', url)
     this.setState({
       errorMsg: '',
       videoURL: url,
@@ -126,7 +125,6 @@ class App extends React.Component {
 
   startDetection = () => {
     this.setState({loading: true})
-    console.log('startDetection...')
 
     const authHeader = new Headers({ 'Authorization': this.state.user.authorization, 'Content-Type': 'application/json' });
     const options = { headers: authHeader };
@@ -134,7 +132,7 @@ class App extends React.Component {
     fetch(`${API_URL_startDetection}?userID=${this.state.user.ID}&videoID=${this.state.videoID}&model=${this.state.model}&checksPerSecond=${this.state.checksPerSecond}`, options)
     .then(handleResponse)
     .then((result) => {
-      console.log('startDetection', result)
+      
       if ( result.data ) {
         const videoMetadata = result.data;
         const faceListLength = parseFloat(videoMetadata.totalFrames) / (parseFloat(videoMetadata.fps) / parseFloat(videoMetadata.checksPerSecond) ) + 1;
@@ -151,19 +149,24 @@ class App extends React.Component {
           }, 5000);
         }
       } else {
-        this.setState({loading: false, errorMsg: result.message})
+        if ( result.user ) {
+          var { user } = this.state;
+          user.secondsRemaining = result.user.secondsRemaining;
+        }
+        this.setState({user: user, loading: false, errorMsg: result.message})
       }
       
     })
     .catch((error) => {
-      console.log('Error:', error)
+      if ( error ) {
+        console.log('Error:', error)
+      }
 
       this.setState({loading: false})
     });
   }
 
   getFaceLocations = () => {
-    console.log('getFaceLocations')
 
     const authHeader = new Headers({ 'Authorization': this.state.user.authorization, 'Content-Type': 'application/json' });
     const options = { headers: authHeader };
@@ -209,7 +212,9 @@ class App extends React.Component {
 
     })
     .catch((error) => {
+      if ( error ) {
         console.log('Error:', error)
+      }
 
         this.setState({loading: false})
     });
@@ -244,7 +249,9 @@ class App extends React.Component {
       this.setState({clusteredFaceImages: result.clusters, faceGroupTS: faceGroupTS, faceGroup: faceGroup, faceTS: faceTS});
     })
     .catch((error) => {
-      console.log('Error:', error)
+      if ( error ) {
+        console.log('Error:', error)
+      }
 
       this.setState({loading: false})
     });
@@ -370,22 +377,18 @@ class App extends React.Component {
             clickClassifyFace={this.clickClassifyFace}
             hoverClassifyFace={this.hoverClassifyFace} />
           <ResultsDisplay
+            visible={this.state.view === 'results'}
             videoURL={this.state.videoURL}
             allFaceLocations={this.state.allFaceLocations}
-            faceGroupTS={this.state.faceGroupTS}
             faceTS={this.state.faceTS}
+            faceGroupTS={this.state.faceGroupTS}
             groupClassification={this.state.groupClassification}
+            faceTS={this.state.faceTS}
             labelColours={this.state.labelColours}
             checksPerSecond={this.state.checksPerSecond}
             totalFrames={this.state.videoMetadata.totalFrames}
             fps={this.state.videoMetadata.fps}
-            setVideoID={this.setVideoID}
-            visible={this.state.view === 'results'}
-            labelColours={this.state.labelColours}
-            groupClassification={this.state.groupClassification}
-            faceGroupTS={this.state.faceGroupTS}
-            faceTS={this.state.faceTS}
-            checksPerSecond={this.state.checksPerSecond} />
+            setVideoID={this.setVideoID} />
           <br />
         </div>
       );

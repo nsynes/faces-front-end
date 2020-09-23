@@ -4,15 +4,40 @@
     border-radius: 5px;
     background-color: rgba(200,200,200,0.3);
 }
+.button.faces-left {
+    position: fixed;
+    opacity: .9;
+}
+.button.faces-right {
+    position: fixed;
+    opacity: .9;
+}
+
 @media all and (min-width: 801px) {
     .face-group-container {
         padding: 4em 1em 1em 1em;
         margin: 0 4em 4em 4em;
     }
+    .button.faces-left {
+        top: 50%;
+        left: 10px;
+    }
+    .button.faces-right {
+        top: 50%;
+        right: 10px;
+    }
 }
 @media all and (max-width: 800px) {
     .face-group-container {
-        padding: 0 0 1em 0;
+        padding: 4em 0 1em 0;
         margin: 0.5em;
+    }
+    .button.faces-left {
+        top: 80%;
+        left: 10px;
+    }
+    .button.faces-right {
+        top: 80%;
+        right: 10px;
     }
 }

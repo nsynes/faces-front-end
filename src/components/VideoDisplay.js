@@ -13,7 +13,9 @@ const VideoDisplay = (props) => {
 
   errorMsg = props.user.loggedIn ? errorMsg : 'Log in (top right)';
 
-  console.log('errorMsg', errorMsg)
+  if ( errorMsg ) {
+    console.log('errorMsg', errorMsg)
+  }
   
   return (
     <MainPage visible={props.visible}>
@@ -31,9 +33,11 @@ const VideoDisplay = (props) => {
             onClick={props.startDetection}
             disabled={(!props.loading && props.videoID && props.user.loggedIn) ? false : true}>Find faces
         </button>
+        <div style={{display: 'inline-block', width: '3em', height: '1em'}}>
+          {props.loading && <Loading size='small' />}
+        </div>
         {errorMsg &&
-        <div style={{color: 'red'}}>{errorMsg}</div>}
-        {props.loading && <Loading size='small' />}
+        <div style={{color: 'red', margin: 5}}>{errorMsg}</div>}
       </div>
       <div className='video-top-container'>
         <div className='video-details'>
@@ -58,8 +62,9 @@ const VideoDisplay = (props) => {
       <div align='center'>
         Try some free, ready processed videos:
         <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/Ori23ZvNPsA')}>The One Show: youtu.be/Ori23ZvNPsA</div>
-        <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/1ZSw1oi3Q3U')}>This Morning: youtu.be/1ZSw1oi3Q3U</div>
-        <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/iYZbQIXoVMY')}>Graham Norton Show: youtu.be/iYZbQIXoVMY</div>
+        <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/J-rSSq2GVCw')}>This Morning: youtu.be/J-rSSq2GVCw</div>
+        <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/TMfStd3v330')}>The Mash Report: youtu.be/TMfStd3v330</div>
+        <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/DZ62A1TTLh0')}>Graham Norton Show: youtu.be/DZ62A1TTLh0</div>
         <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/h1xxC_Rr__U')}>Channel 4 Trailer: youtu.be/h1xxC_Rr__U</div>
       </div>
     </MainPage>

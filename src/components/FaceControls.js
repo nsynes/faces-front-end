@@ -3,7 +3,7 @@ import './FaceControls.css';
 
 function FaceControls(props) {
 
-    var groupNumber = props.groupID == -1 ? props.totalFaceGroups : parseInt(props.groupID) + 1;
+    var groupNumber = parseInt(props.groupID) === -1 ? props.totalFaceGroups : parseInt(props.groupID) + 1;
 
     return (
         <div className='face-controls-container'>
