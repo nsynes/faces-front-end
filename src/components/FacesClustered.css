@@ -5,12 +5,19 @@
     background-color: rgba(200,200,200,0.3);
 }
 .button.faces-left {
+    transition: background-color 0.25s ease;
+    border: 1px solid black;
     position: fixed;
     opacity: .9;
 }
 .button.faces-right {
+    transition: background-color 0.25s ease;
+    border: 1px solid black;
     position: fixed;
     opacity: .9;
+}
+.button.faces-right:hover, .button.faces-left:hover {
+    background-color: rgba(210,210,210,0.9);
 }
 
 @media all and (min-width: 801px) {
