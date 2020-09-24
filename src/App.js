@@ -25,7 +25,7 @@ class App extends React.Component {
         authorization: null,
         secondsRemaining: null
       },
-      landingPage: true,
+      landingPage: false,
       loading: false,
       errorMsg: '',
       videoMetadata: {},
@@ -45,6 +45,15 @@ class App extends React.Component {
       faceListLength: null,
       model: 'cnn',
       view: 'video'
+    }
+  }
+
+  nextTab = () => {
+    const { view } = this.state;
+    if ( view === 'video' ) {
+      this.setState({ view: 'faces' })
+    } else if ( view === 'faces' ) {
+      this.setState({ view: 'results' })
     }
   }
 
@@ -355,6 +364,7 @@ class App extends React.Component {
             checksPerSecond={this.state.videoMetadata.checksPerSecond}
             percentageComplete={this.state.percentageComplete}
             loading={this.state.loading}
+            nextTab={this.nextTab}
             setVideoURL={this.setVideoURL}
             setVideoID={this.setVideoID}
             handleVideoURLChange={this.handleVideoURLChange}
@@ -371,6 +381,7 @@ class App extends React.Component {
             faceImages={this.state.faceImages}
             clusteredFaceImages={this.state.clusteredFaceImages}
             checksPerSecond={this.state.checksPerSecond}
+            nextTab={this.nextTab}
             incrementFaceGroup={this.incrementFaceGroup}
             decrementFaceGroup={this.decrementFaceGroup}
             classifyGroup={this.classifyGroup}

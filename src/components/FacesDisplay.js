@@ -35,6 +35,7 @@ const FaceDisplay = (props) => {
                     videoID={props.videoID}
                     model={props.model}
                     checksPerSecond={props.checksPerSecond} 
+                    nextTab={props.nextTab}
                     incrementFaceGroup={props.incrementFaceGroup}
                     decrementFaceGroup={props.decrementFaceGroup}
                     classifyGroup={props.classifyGroup}

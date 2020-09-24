@@ -4,6 +4,7 @@ import MainPage from './MainPage';
 import Instructions from './Instructions';
 import Video from './Video';
 import Loading from './Loading';
+import NextButton from './NextButton';
 
 import './VideoDisplay.css';
 
@@ -40,6 +41,10 @@ const VideoDisplay = (props) => {
         <div style={{color: 'red', margin: 5}}>{errorMsg}</div>}
       </div>
       <div className='video-top-container'>
+        {props.percentageComplete === 100 && 
+        <div style={{position: 'absolute', left: '102%', top: 0}}>
+          <NextButton nextTab={props.nextTab} />
+        </div>}
         <div className='video-details'>
           <div className='percentage-box'>
             <div style={{position: 'absolute', left: 0, backgroundColor: 'red', width: props.percentageComplete+'%', height: 5}} />
@@ -60,7 +65,7 @@ const VideoDisplay = (props) => {
       </div>
       <br />
       <div align='center'>
-        Try some free, ready processed videos:
+        <b>Try some ready processed videos:</b>
         <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/Ori23ZvNPsA')}>The One Show: youtu.be/Ori23ZvNPsA</div>
         <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/J-rSSq2GVCw')}>This Morning: youtu.be/J-rSSq2GVCw</div>
         <div className='free-video-link' onClick={() => props.setVideoURL('youtu.be/TMfStd3v330')}>The Mash Report: youtu.be/TMfStd3v330</div>

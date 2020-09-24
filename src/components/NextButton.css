@@ -1,0 +1,26 @@
+.button.next {
+    transition: background-color 0.25s ease;
+    font-size: 18pt;
+    opacity: .9;
+    white-space: nowrap;
+    animation: colorchange linear 5s infinite;
+}
+.button.next:hover {
+background-color: rgba(210,210,210,0.9);
+}
+
+@keyframes colorchange {
+    0% {color: #ff1493;}
+    50% {color: #0000ff;}
+    100% {color: #ff1493;}
+}
+@media all and (min-width: 801px) {
+.button.next {
+    display: block;
+}
+}
+@media all and (max-width: 800px) {
+.button.next {
+    display: none;
+}
+}

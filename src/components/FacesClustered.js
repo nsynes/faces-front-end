@@ -1,9 +1,11 @@
 import React from 'react';
 
-import FaceImage from './FaceImage';
-import FaceControls from './FaceControls';
 import KeyboardArrowLeftRounded from '@material-ui/icons/KeyboardArrowLeftRounded';
 import KeyboardArrowRightRounded from '@material-ui/icons/KeyboardArrowRightRounded';
+
+import FaceImage from './FaceImage';
+import FaceControls from './FaceControls';
+import NextButton from './NextButton';
 import './FacesClustered.css';
 
 const FacesClustered = (props) => {
@@ -33,6 +35,8 @@ const FacesClustered = (props) => {
                 onClick={props.incrementFaceGroup}>
                     <KeyboardArrowRightRounded fontSize='large' />
             </button>}
+            {(props.faceGroup == -1 || Object.keys(props.clusteredFaceImages).length === 1) &&
+            <div style={{position:'fixed', top: '50%', right: 10}}><NextButton nextTab={props.nextTab} /></div>}
             <div className='face-container'>
                 <div className='face-group-container' key={`face${props.faceGroup}`}>
                     {props.clusteredFaceImages[props.faceGroup].map((img) => {

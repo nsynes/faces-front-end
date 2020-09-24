@@ -17,6 +17,7 @@
     margin: .75em .75em .25em .75em;
 }
 .video-top-container {
+    position: relative;
     margin: auto;
     border: 1px solid rgba(100,100,100,0.5);
     box-shadow: 0 0 2pt 1pt rgba(100,100,100,0.5);
