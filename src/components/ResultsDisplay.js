@@ -79,7 +79,7 @@ const ResultsDisplay = (props) => {
                                 barCategoryGap={0}>
                             <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis type="number" dataKey="time" tickFormatter={timeStr => new Date(timeStr * 1000).toISOString().substr(14, 5)} />
-                                <YAxis tickFormatter={(label) => Math.abs(label)} allowDecimals={false} />
+                                <YAxis tickFormatter={(label) => label === parseInt(label) ? Math.abs(label) : ''} />
                                 <Legend />
                                 <Tooltip content={<ChartToolTip chartName={'timeseries'}/>} />
                                 <ReferenceLine y={0} stroke="#000" />
