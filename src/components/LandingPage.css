@@ -28,6 +28,7 @@
 .get-started {
     font-size: 30pt;
     border-radius: 10px;
+    background-color: white;
 }
 .get-started:hover {
     cursor: pointer;

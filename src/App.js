@@ -11,7 +11,7 @@ import { handleResponse } from './helpers';
 var collectInterval;
 
 class App extends React.Component {
-  
+
   constructor(props) {
     super(props);
 
@@ -25,7 +25,7 @@ class App extends React.Component {
         authorization: null,
         secondsRemaining: null
       },
-      landingPage: false,
+      landingPage: true,
       loading: false,
       errorMsg: '',
       videoMetadata: {},
@@ -59,7 +59,7 @@ class App extends React.Component {
 
   classifyGroup = (id, classification) => {
     var { videoMetadata, groupClassification, faceTS } = this.state;
-    
+
     groupClassification[id] = groupClassification[id] === classification ? null : classification;
     var numberPattern = /[\d.]+/g;
     var time, index;
@@ -137,19 +137,19 @@ class App extends React.Component {
 
     const authHeader = new Headers({ 'Authorization': this.state.user.authorization, 'Content-Type': 'application/json' });
     const options = { headers: authHeader };
-    
+
     fetch(`${API_URL_startDetection}?userID=${this.state.user.ID}&videoID=${this.state.videoID}&model=${this.state.model}&checksPerSecond=${this.state.checksPerSecond}`, options)
     .then(handleResponse)
     .then((result) => {
-      
+
       if ( result.data ) {
         const videoMetadata = result.data;
         const faceListLength = parseFloat(videoMetadata.totalFrames) / (parseFloat(videoMetadata.fps) / parseFloat(videoMetadata.checksPerSecond) ) + 1;
-      
+
         var { user } = this.state;
         user.secondsRemaining = result.user.secondsRemaining;
         this.setState({ user: user, videoMetadata: videoMetadata, faceListLength: faceListLength })
-        
+
         if ( result.complete ) {
           this.getFaceLocations();
         } else {
@@ -164,7 +164,7 @@ class App extends React.Component {
         }
         this.setState({user: user, loading: false, errorMsg: result.message})
       }
-      
+
     })
     .catch((error) => {
       if ( error ) {
@@ -183,12 +183,12 @@ class App extends React.Component {
     fetch(`${API_URL_getFaceLocations}?userID=${this.state.user.ID}&videoID=${this.state.videoID}&model=${this.state.model}&checksPerSecond=${this.state.checksPerSecond}&from=${this.state.faceMaxTime}`, options)
     .then(handleResponse)
     .then((result) => {
-      
+
       const apiData = result.data;
 
       var { allFaceLocations, faceImages, faceListLength, videoMetadata } = this.state;
       var maxTime = 0;
-      
+
       var time = 0;
       for (var i = 0; i < faceListLength; i++) {
         if ( apiData.hasOwnProperty(time) ) {
@@ -202,9 +202,9 @@ class App extends React.Component {
         if ( faceImages.indexOf(result.images[i]) === -1 )
           faceImages.push(result.images[i])
       }
-      
+
       var loading = true;
-      if ( result.complete || result.user.secondsRemaining === 0 ){
+      if ( result.complete || result.user.secondsRemaining === 0 ) {
         clearInterval(collectInterval);
         loading = false;
       }
@@ -214,8 +214,8 @@ class App extends React.Component {
 
       const percentageComplete = result.complete ? 100 : Math.round(maxTime / (videoMetadata.totalFrames / videoMetadata.fps) * 100);
       this.setState({ user: user, allFaceLocations: allFaceLocations, faceMaxTime: maxTime, percentageComplete: percentageComplete, loading: loading, complete: result.complete })
-      
-      if ( result.complete ) {
+
+      if ( result.complete && result.images.length > 0 ) {
         this.clusterFaces();
       }
 
@@ -234,11 +234,11 @@ class App extends React.Component {
 
     const authHeader = new Headers({ 'Authorization': this.state.user.authorization, 'Content-Type': 'application/json' });
     const options = { headers: authHeader };
-    
+
     fetch(`${API_URL_clusterFaces}?userID=${this.state.user.ID}&videoID=${this.state.videoID}&model=${this.state.model}`, options)
     .then(handleResponse)
     .then((result) => {
-      
+
       var { faceGroupTS, faceTS, videoMetadata } = this.state;
 
       var numberPattern = /[\d.]+/g;
@@ -340,7 +340,7 @@ class App extends React.Component {
     } else {
       return (
         <div className='App'>
-          <Header 
+          <Header
             selectedTab={this.state.view}
             user={this.state.user}
             responseGoogleSuccess={this.responseGoogleSuccess}
@@ -405,7 +405,7 @@ class App extends React.Component {
       );
     }
   }
-  
+
 }
 
 export default App;

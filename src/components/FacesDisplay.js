@@ -14,8 +14,8 @@ const FaceDisplay = (props) => {
         <MainPage visible={props.visible}>
             <Instructions tab='faces' />
             <div align='center'>
-                {!props.loading && props.faceImages.length === 0 && 
-                <div style={{color: 'red'}}>No faces detected yet.</div>}
+                {!props.loading && props.faceImages.length === 0 &&
+                <div style={{color: 'red'}}>No faces detected.</div>}
                 {!clustered && props.loading &&
                 <div>
                     <Loading size='small' /><br />
@@ -24,7 +24,7 @@ const FaceDisplay = (props) => {
                         videoID={props.videoID}
                         model={props.model} />
                 </div>}
-                {props.complete && Object.keys(props.clusteredFaceImages).length === 0 &&
+                {props.complete && props.faceImages.length > 0 && Object.keys(props.clusteredFaceImages).length === 0 &&
                 <Loading size='small' />}
                 { clustered &&
                 <FacesClustered
@@ -34,7 +34,7 @@ const FaceDisplay = (props) => {
                     faceGroup={props.faceGroup}
                     videoID={props.videoID}
                     model={props.model}
-                    checksPerSecond={props.checksPerSecond} 
+                    checksPerSecond={props.checksPerSecond}
                     nextTab={props.nextTab}
                     incrementFaceGroup={props.incrementFaceGroup}
                     decrementFaceGroup={props.decrementFaceGroup}
