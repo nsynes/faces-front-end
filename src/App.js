@@ -25,11 +25,11 @@ class App extends React.Component {
         authorization: null,
         secondsRemaining: null
       },
-      landingPage: true,
+      landingPage: false,
       loading: false,
       errorMsg: '',
       videoMetadata: {},
-      videoURL: '',//'youtu.be/iYZbQIXoVMY',//'0_6AK52kSVQ',//'dIBsEtQyKcA',//'HsRX4myHr4o',
+      videoURL: 'youtu.be/h1xxC_Rr__U',//'youtu.be/iYZbQIXoVMY',//'0_6AK52kSVQ',//'dIBsEtQyKcA',//'HsRX4myHr4o',
       videoID: '',
       faceMaxTime: 0,
       percentageComplete: 0,

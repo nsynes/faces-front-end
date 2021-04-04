@@ -10,6 +10,11 @@ import './ResultsDisplay.css';
 const ResultsDisplay = (props) => {
 
     const { faceGroupTS, faceTS, groupClassification, checksPerSecond } = props;
+
+    console.log('faceGroupTS', faceGroupTS)
+    console.log('faceTS', faceTS)
+    console.log('groupClasification',groupClassification)
+
     var maleTotal = 0, femaleTotal = 0;
     var timeseries = [];
     var mCount, fCount;
@@ -54,6 +59,7 @@ const ResultsDisplay = (props) => {
     if ( faceGroupTS && faceGroupTS.length > 0 ) {
         return (
             <MainPage visible={props.visible}>
+                <div style={{position:'fixed', top: '25%', right: 50}}><button>Save</button></div>
                 <div align='center' style={{marginTop: '2em'}}>
                     <div className='video-top-container'>
                         <div className='video-container'>
